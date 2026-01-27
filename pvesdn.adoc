@@ -1759,7 +1759,7 @@ If you have multiple gateway nodes, you should disable the `rp_filter` (Strict
 Reverse Path Filter) option, because packets can arrive at one node but go out
 from another node.
 
-Add the following to `/etc/sysctl.conf`:
+Create a drop-in sysctl file `/etc/sysctl.d/99-rp-filter.conf`:
 
 -----
 net.ipv4.conf.default.rp_filter=0
