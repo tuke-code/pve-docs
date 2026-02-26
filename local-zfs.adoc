@@ -588,7 +588,8 @@ Limit ZFS Memory Usage
 
 ZFS uses '10 %' of the host memory, clamped to a maximum of +16 GiB+, for the
 **A**daptive **R**eplacement **C**ache (ARC) by default. This value is written
-to `/etc/modprobe.d/zfs.conf` during installation.
+to `/etc/modprobe.d/zfs.conf` during installation. See the manual `man 4 zfs`
+for more information about ZFS kernel module parameters.
 
 Before {pve} 8.1, the ARC usage limit was not set during installation and
 matched ZFS' default value which was either 62.5% starting on ZFS 2.3.0 or 50%
