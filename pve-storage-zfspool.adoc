@@ -83,6 +83,26 @@ on the parent dataset.
 |images rootdir |raw subvol     |no     |yes       |yes
 |==============================================================================
 
+Encryption
+~~~~~~~~~~
+
+ZFS supports encryption of dataset hierarchies. Each encrypted dataset, is
+either an `encryption_root`, storing the properties for encryption itself or
+descendant of its `encryption_root` - see the `zfs-load-key(8)` manpage for
+details.
+
+Sending and receiving encrypted datasets is subject to constraints as some
+encryption parameters (initialization vectors for the symmetric ciphers) need
+to be either transferred with the data, breaking inheriting the encryption
+properties on the receiving side, or need to be recreated on target, requiring
+the data to be sent unencrypted - see the `zfs-recv(8)` manpage for details.
+
+For migration and storage replication of encrypted datasets in {pve}, the
+data is sent without the encryption properties, and the state of encryption
+is determined by the target.
+
+If you want to send and receive encrypted ZFS datasets, you need to ensure that
+all involved storages on all nodes are encrypted.
 
 Examples
 ~~~~~~~~
