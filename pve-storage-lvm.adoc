@@ -128,7 +128,7 @@ snapshots and linked clones.
 [width="100%",cols="m,m,4*d",options="header"]
 |===============================================================================
 |Content types  |Image formats  |Shared   |Snapshots |Full Clones |Linked Clones
-|images rootdir |raw, qcow2     |possible |yes^1^    |yes         |no
+|images rootdir |raw, qcow2^1^  |possible |yes^1^    |yes         |no
 |===============================================================================
 
 ^1^: Since {pve} 9, snapshots as a volume chain have been available for VMs, for
