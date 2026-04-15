@@ -1412,19 +1412,24 @@ cluster is in a healthy state before re-arming.
 Cluster Resource Scheduling
 ---------------------------
 
-The cluster resource scheduler (CRS) mode controls how HA selects nodes for the
-recovery of a service as well as for migrations that are triggered by a
-shutdown policy. The default mode is `basic`, you can change it in the Web UI
-(`Datacenter` -> `Options`).
+The Cluster Resource Scheduler (CRS) is responsible for selecting new node
+placements for HA resources and keeping HA resources on their allowed nodes.
+
+In every HA Manager round, the scheduler goes through every HA resource and
+checks whether the HA resource needs any new node placement. This new node
+placement can be caused by different actions, such as recovering HA resources
+from a fenced node or a new HA affinity rule. See the section
+xref:ha_manager_crs_scheduling_points[CRS Scheduling Points] for a more thorough
+description of which actions the CRS takes for specific changes in the cluster.
 
 [thumbnail="screenshot/gui-datacenter-options-crs.png"]
 
-The change will be in effect starting with the next manager round (after a few
-seconds).
-
-For each HA resource that needs to be recovered or migrated, the scheduler
-iteratively chooses the best node among the nodes that are available to
-the HA resource according to their HA rules, if any.
+The CRS scheduling mode controls how the CRS will calculate the usage
+information for the cluster. This usage information is used as a basis for the
+scheduling decisions. The CRS mode can be changed in the web interface
+(`Datacenter` -> `Options` -> `Cluster Resource Scheduling`). The default mode
+is `basic`. The change will take effect starting with the next HA Manager
+round, which should take no longer than 10 seconds.
 
 NOTE: There are plans to add modes for (static and dynamic) load-balancing in
 the future.
@@ -1455,18 +1460,12 @@ committed node) are considered.
 IMPORTANT: The more HA resources the more possible combinations there are, so
 it's currently not recommended to use it if you have thousands of HA resources.
 
-
+[[ha_manager_crs_scheduling_points]]
 CRS Scheduling Points
 ~~~~~~~~~~~~~~~~~~~~~
 
-The CRS algorithm is not applied for every HA resource in every round, since
-this would mean a large number of constant migrations. Depending on the
-workload, this could put more strain on the cluster than could be avoided by
-constant balancing.
-That's why the {pve} HA manager favors keeping HA resources on their current
-node.
-
-The CRS is currently used at the following scheduling points:
+In every HA Manager round, the CRS checks whether any HA resources need a new
+node placement, which can be caused by any of the following scheduling points:
 
 - HA resource recovery (always active). When a node with active HA resources
   fails, all its HA resources need to be recovered to other nodes. The CRS
