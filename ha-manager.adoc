@@ -1422,6 +1422,9 @@ from a fenced node or a new HA affinity rule. See the section
 xref:ha_manager_crs_scheduling_points[CRS Scheduling Points] for a more thorough
 description of which actions the CRS takes for specific changes in the cluster.
 
+CRS Scheduling Mode
+~~~~~~~~~~~~~~~~~~~
+
 [thumbnail="screenshot/gui-datacenter-options-crs.png"]
 
 The CRS scheduling mode controls how the CRS will calculate the usage
@@ -1435,13 +1438,13 @@ NOTE: There are plans to add modes for (static and dynamic) load-balancing in
 the future.
 
 Basic Scheduler
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 The number of active HA resources on each node is used to choose a recovery
 node. Non-HA-managed resources are currently not counted.
 
 Static-Load Scheduler
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 IMPORTANT: The static mode is still a technology preview.
 
