@@ -1452,6 +1452,14 @@ Static usage information from active guests on each node is used to choose the
 best-fitting node for an HA resource. This includes the configured CPU and
 memory quotas for the active guests.
 
+[[ha_manager_crs_dynamic_scheduler]]
+Dynamic-Load Scheduler
+^^^^^^^^^^^^^^^^^^^^^^
+
+Dynamic usage information from active guests on each node is used to choose the
+best-fitting node for an HA resource. This includes the average CPU and memory
+usage as well as the configured CPU and memory quotas for the active guests.
+
 [[ha_manager_crs_scheduling_points]]
 CRS Scheduling Points
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1498,8 +1506,9 @@ the current node, the HA resource will be migrated to the selected node.
 For the xref:ha_manager_crs_basic_scheduler[basic scheduler mode], the node with
 the fewest active guests is considered the best-suited node.
 
-For the xref:_static_scheduler[static-load scheduler mode], each node in turn
-is considered as if the HA resource was already running on it, using CPU and
+For the xref:ha_manager_crs_static_scheduler[static-load] and
+xref:ha_manager_crs_dynamic_scheduler[dynamic-load] scheduler modes, each node in turn is
+considered as if the HA resource was already running on it, using CPU and
 memory usage from the associated guest configuration. Then for each such
 alternative, CPU and memory usage of all nodes are considered, with memory
 being weighted much more, because it's a truly limited resource. For both, CPU
@@ -1511,10 +1520,10 @@ considered.
 This setting can be enabled with the CRS option `ha-rebalance-on-start` in the
 web interface under `Datacenter` -> `Options` -> `Cluster Resource Scheduling`.
 
-IMPORTANT: For the static-load scheduler mode, this functionality is still in
-technology preview. The more HA resources the more possible combinations there
-are, so it's currently not recommended to use it if you have thousands of HA
-resources.
+IMPORTANT: For the static-load and dynamic-load scheduler modes, this
+functionality is still in technology preview. The more HA resources the more
+possible combinations there are, so it's currently not recommended to use it if
+you have thousands of HA resources.
 
 ifdef::manvolnum[]
 include::pve-copyright.adoc[]
