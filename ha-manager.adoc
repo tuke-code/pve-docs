@@ -1473,38 +1473,45 @@ CRS Scheduling Points
 In every HA Manager round, the CRS checks whether any HA resources need a new
 node placement, which can be caused by any of the following scheduling points:
 
-- HA resource recovery (always active). When a node with active HA resources
-  fails, all its HA resources need to be recovered to other nodes. The CRS
-  algorithm will be used here to balance that recovery over the remaining nodes.
+HA resource recovery (always active)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- HA rule config changes (always active). If a rule imposes different
-  constraints on the HA resources, the HA stack will use the CRS algorithm to
-  find a new target node for the HA resources affected by these rules depending
-  on the type of the new rules:
+When a node with active HA resources fails, all its HA resources need to be
+recovered to other nodes. The CRS algorithm will be used here to balance that
+recovery over the remaining nodes.
 
-** Node affinity rules: If a node affinity rule is created or HA resources/nodes
-   are added to an existing node affinity rule, the HA stack will use the CRS
-   algorithm to ensure that these HA resources are assigned according to their
-   node and priority constraints.
+HA rule config changes (always active)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-** Positive resource affinity rules: If a positive resource affinity rule is
-   created or HA resources are added to an existing positive resource affinity
-   rule, the HA stack will use the CRS algorithm to ensure that these HA
-   resources are moved to a common node.
+If a rule imposes different constraints on the HA resources, the HA stack will
+use the CRS algorithm to find a new target node for the HA resources affected
+by these rules depending on the type of the new rules:
 
-** Negative resource affinity rules: If a negative resource affinity rule is
-   created or HA resources are added to an existing negative resource affinity
-   rule, the HA stack will use the CRS algorithm to ensure that these HA
-   resources are moved to separate nodes.
+- Node affinity rules: If a node affinity rule is created or HA resources/nodes
+  are added to an existing node affinity rule, the HA stack will use the CRS
+  algorithm to ensure that these HA resources are assigned according to their
+  node and priority constraints.
 
-- HA resources stopped -> start transition (opt-in). Requesting that a stopped
-  HA resource should be started is an good opportunity to check for the best
-  suited node as per the CRS algorithm, as moving stopped HA resources is
-  cheaper to do than moving them started, especially if their disk volumes
-  reside on shared storage. You can enable this by setting the
-  **`ha-rebalance-on-start`** CRS option in the datacenter config. You can
-  change that option also in the Web UI, under `Datacenter` -> `Options` ->
-  `Cluster Resource Scheduling`.
+- Positive resource affinity rules: If a positive resource affinity rule is
+  created or HA resources are added to an existing positive resource affinity
+  rule, the HA stack will use the CRS algorithm to ensure that these HA
+  resources are moved to a common node.
+
+- Negative resource affinity rules: If a negative resource affinity rule is
+  created or HA resources are added to an existing negative resource affinity
+  rule, the HA stack will use the CRS algorithm to ensure that these HA
+  resources are moved to separate nodes.
+
+HA resources stopped -> start transition (opt-in)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Requesting that a stopped HA resource should be started is an good opportunity
+to check for the best suited node as per the CRS algorithm, as moving stopped
+HA resources is cheaper to do than moving them started, especially if their
+disk volumes reside on shared storage. You can enable this by setting the
+**`ha-rebalance-on-start`** CRS option in the datacenter config. You can change
+that option also in the Web UI, under `Datacenter` -> `Options` -> `Cluster
+Resource Scheduling`.
 
 ifdef::manvolnum[]
 include::pve-copyright.adoc[]
