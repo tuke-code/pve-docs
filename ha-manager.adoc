@@ -1441,18 +1441,16 @@ the future.
 Basic Scheduler
 ^^^^^^^^^^^^^^^
 
-The number of active HA resources on each node is used to choose the
-best-fitting node for an HA resource. Non-HA-managed resources are currently
-not counted.
+The number of active guests on each node is used to choose the best-fitting
+node for an HA resource.
 
 [[ha_manager_crs_static_scheduler]]
 Static-Load Scheduler
 ^^^^^^^^^^^^^^^^^^^^^
 
-Static usage information from HA resources on each node is used to choose the
+Static usage information from active guests on each node is used to choose the
 best-fitting node for an HA resource. This includes the configured CPU and
-memory quotas for the HA resources. Usage of non-HA-managed resources is
-currently not considered.
+memory quotas for the active guests.
 
 [[ha_manager_crs_scheduling_points]]
 CRS Scheduling Points
