@@ -1434,10 +1434,7 @@ scheduling decisions. The CRS mode can be changed in the web interface
 is `basic`. The change will take effect starting with the next HA Manager
 round, which should take no longer than 10 seconds.
 
-NOTE: There are plans to add modes for (static and dynamic) load-balancing in
-the future.
-
-[[_basic_scheduler]]
+[[ha_manager_crs_basic_scheduler]]
 Basic Scheduler
 ^^^^^^^^^^^^^^^
 
@@ -1524,6 +1521,54 @@ IMPORTANT: For the static-load and dynamic-load scheduler modes, this
 functionality is still in technology preview. The more HA resources the more
 possible combinations there are, so it's currently not recommended to use it if
 you have thousands of HA resources.
+
+CRS Load Balancer
+~~~~~~~~~~~~~~~~~
+
+IMPORTANT: This feature is still in technology preview.
+
+The utilization of individual cluster nodes can vary greatly depending on where
+guests are currently running and how much load these exert at any moment. This
+can cause the node utilizations to become imbalanced over time, where HA
+resources on one node become bottlenecked due to resource contention, while
+another node is barely utilized.
+
+The HA Manager's automatic load balancer can lower the overall cluster
+imbalance by automatically issuing rebalancing migrations. Currently, these
+migrations are issued only for HA resources and executed sequentially.
+Furthermore, these migrations always obey the current HA affinity rules.
+
+The automatic load balancing system can be enabled and configured in the web
+interface under `Datacenter` -> `Options` -> `Cluster Resource Scheduling`.
+This allows fine-tuning the various parameters as described in the next
+paragraph for different cluster setups and requirements. The load balancer
+requires either the xref:ha_manager_crs_static_scheduler[static-load] or
+xref:ha_manager_crs_dynamic_scheduler[dynamic-load] scheduler mode to be in use.
+
+In every HA Manager round, each of which lasts around 10 seconds, the
+automatic load balancer checks whether the cluster imbalance exceeds the
+_imbalance threshold_. If the cluster imbalance stays above the threshold for
+at least as many consecutive HA Manager rounds as the _hold duration_, then
+the load balancer will select the rebalancing migration for an HA resource,
+which lowers the overall cluster imbalance the most. The method used to select
+the best rebalancing migration can be set with the _rebalancing method_
+option. Finally, if the selected migration reduces the current cluster
+imbalance by at least the percentage given by the _imbalance improvement_
+option, the load balancer issues the selected migration.
+
+The cluster imbalance is calculated as the ratio between the standard deviation
+and mean of the individual node loads. Therefore, the _imbalance threshold_
+controls the sensitivity of the load balancer. If the _imbalance threshold_ is
+set to a value of `0.0`, it will try to select a rebalancing migration every
+time the _hold duration_ is exceeded. The _imbalance improvement_ percentage
+filters what constitutes an acceptable rebalancing migration. If it is set to
+`0.0`, then it will always commit to a migration even if the expected
+imbalance does not change at all. However, the value can never be negative, so
+it will never commit to a migration with an expected imbalance worse than the
+current one.
+
+NOTE: It is planned that load balancing will also include non-HA resources in
+the future.
 
 ifdef::manvolnum[]
 include::pve-copyright.adoc[]
