@@ -1502,16 +1502,15 @@ by these rules depending on the type of the new rules:
   rule, the HA stack will use the CRS algorithm to ensure that these HA
   resources are moved to separate nodes.
 
-HA resources stopped -> start transition (opt-in)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+HA resource rebalance on start (opt-in)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Requesting that a stopped HA resource should be started is an good opportunity
-to check for the best suited node as per the CRS algorithm, as moving stopped
-HA resources is cheaper to do than moving them started, especially if their
-disk volumes reside on shared storage. You can enable this by setting the
-**`ha-rebalance-on-start`** CRS option in the datacenter config. You can change
-that option also in the Web UI, under `Datacenter` -> `Options` -> `Cluster
-Resource Scheduling`.
+When starting an HA resource with rebalance on start enabled, the CRS will
+select the node best suited for the HA resource. If the selected node is not
+the current node, the HA resource will be migrated to the selected node.
+
+This setting can be enabled with the CRS option `ha-rebalance-on-start` in the
+web interface under `Datacenter` -> `Options` -> `Cluster Resource Scheduling`.
 
 ifdef::manvolnum[]
 include::pve-copyright.adoc[]
