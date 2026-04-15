@@ -1415,11 +1415,7 @@ Cluster Resource Scheduling
 The cluster resource scheduler (CRS) mode controls how HA selects nodes for the
 recovery of a service as well as for migrations that are triggered by a
 shutdown policy. The default mode is `basic`, you can change it in the Web UI
-(`Datacenter` -> `Options`), or directly in `datacenter.cfg`:
-
-----
-crs: ha=static
-----
+(`Datacenter` -> `Options`).
 
 [thumbnail="screenshot/gui-datacenter-options-crs.png"]
 
