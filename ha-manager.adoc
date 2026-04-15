@@ -1477,11 +1477,6 @@ node placement, which can be caused by any of the following scheduling points:
   fails, all its HA resources need to be recovered to other nodes. The CRS
   algorithm will be used here to balance that recovery over the remaining nodes.
 
-- HA group config changes (always active). If a node is removed from a group,
-  or its priority is reduced, the HA stack will use the CRS algorithm to find a
-  new target node for the HA resources in that group, matching the adapted
-  priority constraints.
-
 - HA rule config changes (always active). If a rule emposes different
   constraints on the HA resources, the HA stack will use the CRS algorithm to
   find a new target node for the HA resources affected by these rules depending
