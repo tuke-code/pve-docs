@@ -767,6 +767,110 @@ For example:
 pveceph pool create <pool-name> --erasure-coding profile=<profile-name>
 ----
 
+FastEC (`allow_ec_optimizations`)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Ceph Tentacle introduces a new erasure coding I/O path called FastEC,
+enabled per pool via the `allow_ec_optimizations` flag. FastEC adds partial
+reads and partial writes on EC pools, substantially improving small random
+I/O performance -- the dominant access pattern of virtual machine disk I/O.
+Upstream recommends it for RBD and CephFS backed storage
+footnote:[Ceph Erasure Code
+{cephdocs-url}/rados/operations/erasure-code/].
+
+FastEC has four requirements that the Ceph monitor enforces:
+
+* the pool must be erasure coded;
+* the cluster must be at `require_osd_release` tentacle or later;
+* the erasure code profile must use a plugin and technique combination
+  that supports the optimized EC path:
++
+[width="70%",options="header"]
+|===
+|Plugin		|Technique		|FastEC
+|`isa`		|`reed_sol_van`		|yes
+|`isa`		|`cauchy`		|no
+|`jerasure`	|`reed_sol_van`		|yes
+|`jerasure`	|all others		|no
+|`lrc`		|(any)			|no
+|`shec`		|(any)			|no
+|`clay`		|(any)			|no
+|===
++
+* the pool's stripe unit must be a multiple of 4096 bytes. The default
+  stripe unit satisfies this, so this is only relevant for pools created
+  with a custom `stripe_unit` in their erasure code profile.
+
+If any precondition is not met, `ceph osd pool set <pool>-data allow_ec_optimizations 1`
+fails with a descriptive error -- no silent degradation.
+
+`pveceph` does not set the plugin or technique explicitly when creating an
+EC profile -- both are seeded from the monitor's
+`osd_pool_default_erasure_code_profile` option (`reed_sol_van` by default
+on both Squid and Tentacle). The technique requirement is therefore
+satisfied out of the box unless the operator has overridden this setting.
+Verify with:
+
+[source,bash]
+----
+ceph config get mon osd_pool_default_erasure_code_profile
+----
+
+If the output shows a technique other than `reed_sol_van`, either update
+the cluster-wide default or create a compatible profile explicitly and pass
+it via the `profile` property when creating the pool (see above).
+
+Check the cluster release with:
+
+[source,bash]
+----
+ceph osd dump | grep require_osd_release
+----
+
+If this reports a release older than `tentacle`, run
+`ceph osd require-osd-release tentacle` after all OSDs have been upgraded.
+
+IMPORTANT: `allow_ec_optimizations` is a one-way switch. Once enabled on a
+pool, the Ceph monitor refuses to clear the flag again, so rolling back
+requires draining and recreating the pool. Enable it only after validating
+that FastEC works for your workload on a test pool.
+
+Enabling FastEC on a pool
++++++++++++++++++++++++++
+
+FastEC is enabled per pool via the `ceph` CLI. It can be set on both new
+and existing (populated) pools. No data migration or re-encoding takes
+place; only pool metadata changes.
+
+To enable FastEC on a pool, run the following command against the data pool
+(typically named `<pool-name>-data`):
+
+[source,bash]
+----
+ceph osd pool set <pool-name>-data allow_ec_optimizations 1
+----
+
+Verify the result with:
+
+[source,bash]
+----
+ceph osd pool get <pool-name>-data allow_ec_optimizations
+----
+
+The same command reports the current state for any EC pool, which is useful
+when auditing a cluster.
+
+When the flag is set on a populated pool, be aware of the following:
+
+* **Primary re-election.** FastEC marks data shards 1 through k-1 as
+  non-primary, so PGs whose primary was on one of those shards will
+  re-peer. This is a normal peering event and causes a brief I/O pause
+  per affected PG.
+
+* **Scrub interaction.** Re-peering cancels any in-flight scrub on
+  affected PGs. Those PGs will need to be re-scrubbed after peering
+  completes.
+
 Adding EC Pools as Storage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
