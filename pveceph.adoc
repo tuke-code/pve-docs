@@ -1023,6 +1023,10 @@ TIP: If the pool already contains objects, these must be moved accordingly.
 Depending on your setup, this may introduce a big performance impact on your
 cluster. As an alternative, you can create a new pool and move disks separately.
 
+WARNING: When using the PG autoscaler, all pools in the cluster are required to
+use CRUSH rules of the same kind, either all specifying a device class,
+or none. Otherwise the autoscaler will skip the affected
+pools and their `pg_num` will not be adjusted.
 
 Ceph Client
 -----------
