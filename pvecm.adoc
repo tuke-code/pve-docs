@@ -232,6 +232,17 @@ Log in to the node you want to join into an existing cluster via `ssh`.
 For `IP-ADDRESS-CLUSTER`, use the IP or hostname of an existing cluster node.
 An IP address is recommended (see xref:pvecm_corosync_addresses[Link Address Types]).
 
+By default, `pvecm add` authenticates against the existing cluster
+node's API, prompting for that node's `root@pam` password and verifying
+its SHA-256 certificate fingerprint. SSH password authentication is not
+required for this default flow, so administrators may keep
+`PasswordAuthentication no` set in `sshd_config`.
+
+Pass `--use_ssh` to fall back to the legacy SSH-based join, which uses
+`ssh-copy-id` to merge the existing cluster's root key onto the new
+node. That flow does require root SSH login (with password or key) on
+the existing node.
+
 
 To check the state of the cluster use:
 
