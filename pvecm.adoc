@@ -312,6 +312,7 @@ Kronosnet transport layer, also use the 'link1' parameter.
 Using the GUI, you can select the correct interface from the corresponding
 'Link X' fields in the *Cluster Join* dialog.
 
+[[pvecm_remove_node]]
 Remove a Cluster Node
 ---------------------
 
