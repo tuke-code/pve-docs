@@ -194,9 +194,16 @@ Response Compression
 --------------------
 
 By default `pveproxy` uses gzip HTTP-level compression for compressible
-content, if the client supports it. This can disabled in `/etc/default/pveproxy`
+content, if the client supports it. This can be disabled in
+`/etc/default/pveproxy`:
 
  COMPRESSION=0
+
+NOTE: Disabling compression mitigates BREACH-class side-channel attacks
+against authenticated session cookies, at the cost of slightly more
+bandwidth used by the web interface. Most deployments do not need to
+change the default; consider it on hosts where the web interface is
+exposed across networks you do not fully control.
 
 [[pveproxy_real_ip]]
 Real Client IP Logging
