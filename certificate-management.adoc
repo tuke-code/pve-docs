@@ -17,6 +17,13 @@ used.
 
 The CA certificate and key are stored in the xref:chapter_pmxcfs[Proxmox Cluster File System (pmxcfs)].
 
+To distribute the cluster CA to administrator workstations and avoid
+browser warnings, copy `/etc/pve/pve-root-ca.pem` from any cluster node
+out of band (for example via `scp` or by reading it through an existing
+SSH session) and import it into the operating system or browser trust
+store. There is no API or web interface endpoint for downloading the
+file.
+
 
 [[sysadmin_certs_api_gui]]
 Certificates for API and Web GUI
