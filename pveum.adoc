@@ -1,7 +1,5 @@
-[[chapter_user_management]]
-
 [[user_mgmt]]
-
+[[chapter_user_management]]
 ifdef::manvolnum[]
 pveum(1)
 ========
