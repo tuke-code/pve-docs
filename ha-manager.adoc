@@ -126,18 +126,14 @@ the linux kernel software watchdog (`softdog`).
 Resources
 ---------
 
-We call the primary management unit handled by `ha-manager` a
-resource. A resource (also called ``service'') is uniquely
-identified by a service ID (SID), which consists of the resource type
-and a type specific ID, for example `vm:100`. That example would be a
-resource of type `vm` (virtual machine) with the ID 100.
+The HA Manager's primary management unit is called an HA resource (or
+``HA service''). Currently, an HA resource can be either a Virtual
+Machine (VM) or a Linux Container (CT).
 
-For now we have two important resources types - virtual machines and
-containers. One basic idea here is that we can bundle related software
-into such a VM or container, so there is no need to compose one big
-service from other services, as was done with `rgmanager`. In
-general, a HA managed resource should not depend on other resources.
-
+Each HA resource is uniquely identified by a service ID (`sid`), which
+consists of the resource type and a type-specific ID, which is the VMID
+for VMs and containers. For example, for the VM with VMID `100`, the
+service ID is `vm:100`.
 
 Management Tasks
 ----------------
