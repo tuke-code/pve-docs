@@ -180,6 +180,9 @@ high-performance setups:
 * one medium bandwidth (1 Gbps) exclusive for the latency sensitive corosync
   cluster communication.
 
+If a firewall is enabled you will have to open the ports used by Ceph, the
+easiest way to do this is to use a firewall `macro`.
+
 [[pve_ceph_recommendation_disk]]
 .Disks
 When planning the size of your Ceph cluster, it is important to take the

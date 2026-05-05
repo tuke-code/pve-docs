@@ -172,9 +172,15 @@ set the enable option here:
 enable: 1
 ----
 
-IMPORTANT: If you enable the firewall, traffic to all hosts is blocked by
-default. Only exceptions is WebGUI(8006) and ssh(22) from your local
-network.
+IMPORTANT: If you enable the firewall, traffic to all hosts will be
+blocked by default - with some exceptions for traffic coming from the
+local network to the WebUI, SSH and other important services. A full
+list of the default firewall rules can be found at
+xref:pve_firewall_default_rules.
+
+Should you have other services running which communicate over the
+network, you will have to allow them seperately. For some common
+services there are `macros` available.
 
 If you want to administrate your {pve} hosts from remote, you
 need to create rules to allow traffic from those remote IPs to the web
@@ -510,6 +516,8 @@ following traffic is still allowed for all {pve} hosts in the cluster:
 * TCP traffic from management hosts to port 3128 for connections to the SPICE
   proxy
 * TCP traffic from management hosts to port 22 to allow ssh access
+* TCP traffic from management hots to the port range 60000 to 60050 allowing
+  traffic for migrations
 * UDP traffic in the cluster network to ports 5405-5412 for corosync
 * UDP multicast traffic in the cluster network
 * ICMP traffic type 3 (Destination Unreachable), 4 (congestion control) or 11
