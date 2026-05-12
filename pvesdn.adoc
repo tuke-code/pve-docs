@@ -769,6 +769,111 @@ NOTE: The dummy interface will automatically be configured as `passive`. Every
 interface which doesn't have an ip-address configured will be treated as a
 `point-to-point` link.
 
+[[pvesdn_wireguard]]
+WireGuard
+~~~~~~~~~
+
+WireGuard can be used for establishing a VPN between Proxmox VE nodes and / or
+external nodes. It does not provide dynamic routing by itself, but can be used
+in conjunction with dynamic routing protocols operating on layer 3 and above
+(OSPF, BGP) to provide a dynamically routed, encrypted transport, for example
+to carry EVPN or VXLAN traffic.
+
+NOTE: In order to use WireGuard, the package `wireguard-tools` needs to be
+installed.
+
+Configuration options:
+
+[[pvesdn_wireguard_fabric]]
+On the Fabric
+^^^^^^^^^^^^^
+
+Name:: This is the name of the WireGuard fabric and can be at most 8 characters
+long.
+
+Persistent Keepalive:: If this is set, then WireGuard will send an empty
+authenticated packet every N seconds to each configured peer. This can help
+keeping connections alive when using stateful firewalls or NAT.
+
+[[pvesdn_wireguard_node]]
+On the Node
+^^^^^^^^^^^
+
+There are two types of nodes: internal and external. Internal nodes are Proxmox
+VE nodes, external nodes everything else. They are essentially reusable peer
+definitions that can be used across the whole cluster.
+
+.Internal
+
+Endpoint:: This is the IP or hostname that other Proxmox VE nodes should use for
+connecting to this Proxmox VE node. This is used as the endpoint when
+configuring this Proxmox VE node as a peer.
+
+Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
+or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
+on other nodes, the list is used as the `AllowedIPs` setting in the WireGuard
+peer configuration, that is, both the source filter for incoming traffic and
+the routing destination for outgoing traffic to this node.
+
+.External
+
+Name:: The name of the external node.
+
+Public Key:: The public key used by the external node.
+
+Endpoint:: The endpoint other nodes use to connect to this external peer, such
+as `192.0.2.1:51820`.
+
+Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
+or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
+on other nodes, the list is used as the `AllowedIPs` setting in the WireGuard
+peer configuration, that is, both the source filter for incoming traffic and
+the routing destination for outgoing traffic to this node.
+
+[[pvesdn_wireguard_interface]]
+On The Interface
+^^^^^^^^^^^^^^^^
+
+Name:: The name of the network interface on the Linux host. One to eight
+characters that must start with an alphanumeric character; the remaining
+characters may be alphanumeric or hyphens.
+
+IP:: The IPv4 address in CIDR notation that should be configured on this
+interface (for example `198.51.100.1/24`).
+
+IPv6:: The IPv6 address in CIDR notation that should be configured on this
+interface (for example `2001:db8::1/64`).
+
+Listen Port:: The listening port for this interface.
+
+Peers:: A list of peers that should be configured for that interface. All nodes
+that are part of the fabric can be selected as peers - the peer definition will
+be auto-generated from the configuration in the node.
+
+When defining an interface, Proxmox VE automatically generates a private key
+for it in `/etc/pve/priv/wg-keys.cfg` upon saving the interface, and stores the
+matching public key alongside the interface in the fabric configuration so it
+can be shown in the Web UI when editing the node. Removing an interface from a
+node removes the corresponding private key from `wg-keys.cfg` as part of the
+same API call.
+
+The fabric automatically generates routes through the WireGuard interface for
+every peer's allowed IPs. For example, if interface wg0 has two peers with
+`198.51.100.0/24` and `203.0.113.0/24` as allowed IPs, then routes for both
+subnets are created. If the peer references the interface of a Proxmox VE node,
+that interface's configured IP address is additionally added as a host route to
+the allowed IPs (for example, a peer node configured with `192.0.2.10/24` gets
+`192.0.2.10/32` added).
+
+
+[[pvesdn_wireguard_peer]]
+On The Peer
+^^^^^^^^^^^
+
+Skip Route Generation:: The fabric will autogenerate routes in the kernel
+routing table for all allowed IPs of a peer. By setting this option, no routes
+will be inserted into the kernel routing table.
+
 [[pvesdn_config_route_filtering]]
 Prefix Lists and Route Maps
 ---------------------------
