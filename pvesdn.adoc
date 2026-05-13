@@ -894,12 +894,6 @@ received from a peer before installing them; outgoing maps run against routes
 before announcing them. Both fields are optional and selected from the route
 maps configured in the SDN.
 
-NOTE: For the EVPN controller, the user-provided route maps are invoked via
-`call` from internal wrapper maps (`MAP_VTEP_IN` / `MAP_VTEP_OUT`) whose
-trailing action is `permit`. As a result, a deny-only user route map will not
-block routes that do not match any of its entries; finish such a map with an
-explicit catch-all `deny` entry if you want a closed default.
-
 The OSPF and OpenFabric xref:pvesdn_config_fabrics[fabrics] take a `Route
 Filter` option that references a prefix list. When set, only routes whose
 destinations pass the prefix list are installed in the kernel routing table.
