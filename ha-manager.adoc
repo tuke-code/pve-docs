@@ -1551,6 +1551,12 @@ imbalance by automatically issuing rebalancing migrations. Currently, these
 migrations are issued only for HA resources and executed sequentially.
 Furthermore, these migrations always obey the current HA affinity rules.
 
+Disabling `auto-rebalance` for an HA resource prevents the resource from
+being part of automatically issued rebalancing migrations.
+
+NOTE: Any HA resource with a positive affinity for an HA resource with
+`auto-rebalance` disabled won't be part of rebalancing migrations either.
+
 The automatic load balancing system can be enabled and configured in the web
 interface under `Datacenter` -> `Options` -> `Cluster Resource Scheduling`.
 This allows fine-tuning the various parameters as described in the next
