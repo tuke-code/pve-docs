@@ -841,7 +841,8 @@ A route map is an ordered list of entries that match incoming or outgoing
 routes against criteria, optionally modify attributes such as the metric or
 local preference, and either `permit` (forward the route, possibly modified) or
 `deny` (drop the route). FRR evaluates entries in order; the first match
-controls the action.
+controls the action. Every route map implicitly has an otherwise empty `deny` as
+its last entry, denying all routes that did not match an entry explicitly.
 
 Route maps are managed under `Datacenter -> SDN -> Route Maps`. Each entry has
 the following properties:
