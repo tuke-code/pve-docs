@@ -569,7 +569,7 @@ EBGP:: If your peer's remote-AS is different, this enables EBGP.
 Loopback Interface:: Use a loopback or dummy interface as the source of the EVPN network
   (for multipath).
 
-ebgp-mutltihop:: Increase the number of hops to reach peers, in case they are
+ebgp-multihop:: Increase the number of hops to reach peers, in case they are
   not directly connected or they use loopback.
 
 bgp-multipath-as-path-relax:: Allow ECMP if your peers have different ASN.
