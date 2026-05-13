@@ -331,8 +331,13 @@ EVPN zone configuration options:
 VRF VXLAN ID:: A VXLAN-ID used for dedicated routing interconnect between VNets.
   It must be different than the VXLAN-ID of the VNets.
 
-Controller:: The EVPN-controller to use for this zone. (See controller plugins
-  section).
+Primay Controller:: The primary EVPN-controller to use for this zone.
+  The primary controller is used for auto-deriving the VTEP IPs, based on the
+  peer definition. For more information see the
+  xref:pvesdn_controller_plugin_evpn[controller section].
+
+Addtional Controllers:: Additional EVPN controllers to use for this zone.
+  Controllers listed here will announce the L2VPN EVPN routes for this zone.
 
 VNet MAC Address:: Anycast MAC address that gets assigned to all VNets in this
   zone.  Will be auto-generated if not defined.
@@ -462,13 +467,77 @@ EVPN controller configuration options:
 
 ASN #:: A unique BGP ASN number. It's highly recommended to use a private ASN
   number (64512 – 65534, 4200000000 – 4294967294), as otherwise you could end up
-  breaking global routing by mistake.
+  breaking global routing by mistake. Every EVPN controller configured on a node
+  must have the same ASN configured.
 
 SDN Fabric:: A xref:pvesdn_config_fabrics[Fabric] that contains all the nodes
   part of the EVPN zone. Will be used as the underlay network.
 
 Peers:: An IP list of all nodes that are part of the EVPN zone.  (could also be
   external nodes or route reflector servers)
+
+Nodes:: A list of nodes where this controller should be active. This can be used
+  to configure EVPN peering sessions on specific nodes only.
+
+Peer Group Name:: EVPN controllers use the peer group name 'VTEP' by default.
+  When defining multiple EVPN controllers, each additional controller needs to
+  specify a custom peer group name to be used in the FRR configuration.
+
+BGP Mode:: Allows configuring the type of BGP session manually.  The 'auto'
+  mode preserves the old behavior of the SDN stack: EVPN controllers were iBGP,
+  unless there was a BGP controller configured. In that case the EVPN controller
+  re-used the BGP session from the BGP controller. With this option, the type of
+  BGP session can be overridden manually - allowing for explicitly configuring
+  the type of BGP session that should be established with the EVPN controller.
+
+ebgp-multihop:: Increase the number of hops to reach peers, in case they are
+  not directly connected or they use loopback. (only for BGP Mode 'external').
+
+ASN
+^^^
+Every router can be member of exactly one Autonomous System, so any iBGP
+sessions on a given node (irregardless of address family) need to have the same
+ASN configured. Any configuration that has two iBGP sessions with different ASNs
+is rejected and an error thrown, since it is by definition not possible to have
+two iBGP sessions with different ASNs on the same BGP instance, as one instance
+can only have one local ASN.
+
+The local ASN of the FRR instance is auto-derived based on the
+settings in the SDN controllers:
+
+If only a BGP or EVPN controller exists (but not both), then the respective ASN
+from the controller is used.
+
+For backwards-compatibility reasons, the SDN stack checks if there are any EVPN
+controllers in auto mode. If a BGP controller exists, then the ASN from the
+BGP controller will be used in any case.
+
+Otherwise, if an EVPN controller is configured, then the ASN from the EVPN
+controller is used - otherwise the ASN from the BGP controller.
+
+The SDN stack utilizes the local-as directive together with the `no-prepend
+replace-as` option in the FRR configuration for handling multiple ASN numbers in
+the configuration. This is the case when the BGP and EVPN controller have
+different ASNs configured and auto mode is disabled.
+
+
+VTEP IP auto-generation
+^^^^^^^^^^^^^^^^^^^^^^^
+The VTEP IPs for the VXLAN devices of a zone will be auto-derived based on the
+(primary) controller defined in the EVPN zone:
+
+If a BGP or IS-IS controller with a loopback interface is used, then the IP from
+the loopback interface will be used as VTEP IP.
+
+If the peer list of the controller contains an IP that is locally configured on
+the node, then this IP will be used as VTEP IP.
+
+Otherwise, the EVPN controller will check the route in the default routing table
+for the first peer IP and use the source IP address specified in the routing
+table as VTEP IP. This can cause issues if the route gets announced dynamically
+e.g. via a fabric. In that case it is necessary for the kernel routing table to
+contain the required entry when applying the configuration for the EVPN
+controller.
 
 
 [[pvesdn_controller_plugin_BGP]]
