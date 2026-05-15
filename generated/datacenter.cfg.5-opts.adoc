@@ -108,6 +108,22 @@ Default keybord layout for vnc server.
 
 Default GUI language.
 
+`location`: `latitude=<number> ,longitude=<number> [,name=<name>]` ::
+
+The location of the cluster.
+
+`latitude`=`<number> (-90 - 90)` ;;
+
+The latitude of the nodes location in degrees.
+
+`longitude`=`<number> (-180 - 180)` ;;
+
+The longitude of the nodes location in degrees.
+
+`name`=`<name>` ;;
+
+The name of the location of this node
+
 `mac_prefix`: `<string>` ('default =' `BC:24:11`)::
 
 Prefix for the auto-generated MAC addresses of virtual guests. The default `BC:24:11` is the Organizationally Unique Identifier (OUI) assigned by the IEEE to Proxmox Server Solutions GmbH for a MAC Address Block Large (MA-L). You're allowed to use this in local networks, i.e., those not directly reachable by the public (e.g., in a LAN or NAT/Masquerading).

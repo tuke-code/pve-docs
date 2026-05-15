@@ -406,7 +406,7 @@ SCSI controller model
 
 cloud-init: Sets DNS search domains for a container. Create will automatically use the setting from the host if neither searchdomain nor nameserver are set.
 
-`--serial[n]` `(/dev/.+|socket)` ::
+`--serial[n]` `(/dev/[^,]+|socket)` ::
 
 Create a serial device inside the VM (n is 0 to 3)
 
@@ -1043,7 +1043,7 @@ SCSI controller model
 
 cloud-init: Sets DNS search domains for a container. Create will automatically use the setting from the host if neither searchdomain nor nameserver are set.
 
-`--serial[n]` `(/dev/.+|socket)` ::
+`--serial[n]` `(/dev/[^,]+|socket)` ::
 
 Create a serial device inside the VM (n is 0 to 3)
 
@@ -1673,7 +1673,7 @@ SCSI controller model
 
 cloud-init: Sets DNS search domains for a container. Create will automatically use the setting from the host if neither searchdomain nor nameserver are set.
 
-`--serial[n]` `(/dev/.+|socket)` ::
+`--serial[n]` `(/dev/[^,]+|socket)` ::
 
 Create a serial device inside the VM (n is 0 to 3)
 

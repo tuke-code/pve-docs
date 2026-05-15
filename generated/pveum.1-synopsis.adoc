@@ -923,7 +923,9 @@ Full User ID, in the `name@realm` format.
 [[cli_pveum_user_token_modify]]
 *pveum user token modify* `<userid> <tokenid>` `[OPTIONS]` `[FORMAT_OPTIONS]`
 
-Update API token for a specific user.
+Update API token for a specific user. NOTE: when 'regenerate' is set, the
+returned token value needs to be stored as it cannot be retrieved
+afterwards!
 
 `<userid>`: `<string>` ::
 
@@ -948,6 +950,10 @@ API token expiration date (seconds since epoch). '0' means no expiration date.
 `--privsep` `<boolean>` ('default =' `1`)::
 
 Restrict API token privileges with separate ACLs (default), or give full privileges of corresponding user.
+
+`--regenerate` `<boolean>` ('default =' `0`)::
+
+Regenerate the token's secret value. All users of the previous secret will lose access after this operation.
 
 [[cli_pveum_user_token_permissions]]
 *pveum user token permissions* `<userid> <tokenid>` `[OPTIONS]` `[FORMAT_OPTIONS]`

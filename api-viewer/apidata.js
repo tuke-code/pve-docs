@@ -8265,6 +8265,7 @@ const apiSchema = [
                                                    "cause" : {
                                                       "description" : "The reason why the HA resource is blocking the migration.",
                                                       "enum" : [
+                                                         "node-affinity",
                                                          "resource-affinity"
                                                       ],
                                                       "type" : "string"
@@ -8347,6 +8348,7 @@ const apiSchema = [
                                                    "cause" : {
                                                       "description" : "The reason why the HA resource is blocking the relocation.",
                                                       "enum" : [
+                                                         "node-affinity",
                                                          "resource-affinity"
                                                       ],
                                                       "type" : "string"
@@ -11281,61 +11283,59 @@ const apiSchema = [
                               },
                               "osd" : {
                                  "description" : "OSDs configured in the cluster and their properties.",
-                                 "properties" : {
-                                    "{id}" : {
-                                       "description" : "Useful properties are listed, but not the full list.",
-                                       "properties" : {
-                                          "back_addr" : {
-                                             "description" : "Bind addresses and ports for backend inter OSD traffic.",
-                                             "type" : "string"
-                                          },
-                                          "ceph_release" : {
-                                             "description" : "Ceph release codename currently used.",
-                                             "type" : "string"
-                                          },
-                                          "ceph_version" : {
-                                             "description" : "Version info currently used by the service.",
-                                             "type" : "string"
-                                          },
-                                          "ceph_version_short" : {
-                                             "description" : "Short version (numerical) info currently used by the service.",
-                                             "type" : "string"
-                                          },
-                                          "device_id" : {
-                                             "description" : "Devices used by the OSD.",
-                                             "type" : "string"
-                                          },
-                                          "front_addr" : {
-                                             "description" : "Bind addresses and ports for frontend traffic to OSDs.",
-                                             "type" : "string"
-                                          },
-                                          "hostname" : {
-                                             "description" : "Hostname on which the service is running.",
-                                             "type" : "string"
-                                          },
-                                          "id" : {
-                                             "description" : "OSD ID.",
-                                             "type" : "integer"
-                                          },
-                                          "mem_swap_kb" : {
-                                             "description" : "Memory of the service currently in swap.",
-                                             "type" : "integer"
-                                          },
-                                          "mem_total_kb" : {
-                                             "description" : "Memory consumption of the service.",
-                                             "type" : "integer"
-                                          },
-                                          "osd_data" : {
-                                             "description" : "Path to the OSD data directory.",
-                                             "type" : "string"
-                                          },
-                                          "osd_objectstore" : {
-                                             "description" : "OSD objectstore type.",
-                                             "type" : "string"
-                                          }
+                                 "items" : {
+                                    "description" : "Useful properties are listed, but not the full list.",
+                                    "properties" : {
+                                       "back_addr" : {
+                                          "description" : "Bind addresses and ports for backend inter OSD traffic.",
+                                          "type" : "string"
                                        },
-                                       "type" : "object"
-                                    }
+                                       "ceph_release" : {
+                                          "description" : "Ceph release codename currently used.",
+                                          "type" : "string"
+                                       },
+                                       "ceph_version" : {
+                                          "description" : "Version info currently used by the service.",
+                                          "type" : "string"
+                                       },
+                                       "ceph_version_short" : {
+                                          "description" : "Short version (numerical) info currently used by the service.",
+                                          "type" : "string"
+                                       },
+                                       "device_id" : {
+                                          "description" : "Devices used by the OSD.",
+                                          "type" : "string"
+                                       },
+                                       "front_addr" : {
+                                          "description" : "Bind addresses and ports for frontend traffic to OSDs.",
+                                          "type" : "string"
+                                       },
+                                       "hostname" : {
+                                          "description" : "Hostname on which the service is running.",
+                                          "type" : "string"
+                                       },
+                                       "id" : {
+                                          "description" : "OSD ID.",
+                                          "type" : "integer"
+                                       },
+                                       "mem_swap_kb" : {
+                                          "description" : "Memory of the service currently in swap.",
+                                          "type" : "integer"
+                                       },
+                                       "mem_total_kb" : {
+                                          "description" : "Memory consumption of the service.",
+                                          "type" : "integer"
+                                       },
+                                       "osd_data" : {
+                                          "description" : "Path to the OSD data directory.",
+                                          "type" : "string"
+                                       },
+                                       "osd_objectstore" : {
+                                          "description" : "OSD objectstore type.",
+                                          "type" : "string"
+                                       }
+                                    },
+                                    "type" : "object"
                                  },
                                  "type" : "array"
                               }
@@ -13522,9 +13522,10 @@ const apiSchema = [
                                                       },
                                                       "vnet" : {
                                                          "description" : "The SDN vnet object identifier.",
-                                                         "format" : "pve-sdn-vnet-id",
-                                                         "type" : "string",
-                                                         "typetext" : "<string>"
+                                                         "maxLength" : 8,
+                                                         "minLength" : 2,
+                                                         "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                         "type" : "string"
                                                       }
                                                    }
                                                 },
@@ -13555,9 +13556,10 @@ const apiSchema = [
                                                       },
                                                       "vnet" : {
                                                          "description" : "The SDN vnet object identifier.",
-                                                         "format" : "pve-sdn-vnet-id",
-                                                         "type" : "string",
-                                                         "typetext" : "<string>"
+                                                         "maxLength" : 8,
+                                                         "minLength" : 2,
+                                                         "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                         "type" : "string"
                                                       }
                                                    }
                                                 },
@@ -13801,9 +13803,10 @@ const apiSchema = [
                                                       },
                                                       "vnet" : {
                                                          "description" : "The SDN vnet object identifier.",
-                                                         "format" : "pve-sdn-vnet-id",
-                                                         "type" : "string",
-                                                         "typetext" : "<string>"
+                                                         "maxLength" : 8,
+                                                         "minLength" : 2,
+                                                         "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                         "type" : "string"
                                                       }
                                                    }
                                                 },
@@ -13834,9 +13837,10 @@ const apiSchema = [
                                              "properties" : {
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14075,9 +14079,10 @@ const apiSchema = [
                                                 },
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14108,9 +14113,10 @@ const apiSchema = [
                                              "properties" : {
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14211,9 +14217,10 @@ const apiSchema = [
                                                 },
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14243,9 +14250,10 @@ const apiSchema = [
                                        "properties" : {
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -14294,9 +14302,10 @@ const apiSchema = [
                                                 },
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14337,9 +14346,10 @@ const apiSchema = [
                                                 },
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -14470,9 +14480,10 @@ const apiSchema = [
                                           },
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -14607,15 +14618,17 @@ const apiSchema = [
                                           },
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "zone" : {
                                              "description" : "The SDN zone object identifier.",
-                                             "format" : "pve-sdn-zone-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -14658,15 +14671,17 @@ const apiSchema = [
                                           },
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "zone" : {
                                              "description" : "The SDN zone object identifier.",
-                                             "format" : "pve-sdn-zone-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -14718,15 +14733,17 @@ const apiSchema = [
                                           },
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "zone" : {
                                              "description" : "The SDN zone object identifier.",
-                                             "format" : "pve-sdn-zone-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -14767,9 +14784,10 @@ const apiSchema = [
                                     },
                                     "vnet" : {
                                        "description" : "The SDN vnet object identifier.",
-                                       "format" : "pve-sdn-vnet-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -14804,9 +14822,10 @@ const apiSchema = [
                                     },
                                     "vnet" : {
                                        "description" : "The SDN vnet object identifier.",
-                                       "format" : "pve-sdn-vnet-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -14970,9 +14989,10 @@ const apiSchema = [
                                     },
                                     "vnet" : {
                                        "description" : "The SDN vnet object identifier.",
-                                       "format" : "pve-sdn-vnet-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "zone" : {
                                        "description" : "Name of the zone this VNet belongs to.",
@@ -15184,9 +15204,10 @@ const apiSchema = [
                               },
                               "vnet" : {
                                  "description" : "The SDN vnet object identifier.",
-                                 "format" : "pve-sdn-vnet-id",
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "maxLength" : 8,
+                                 "minLength" : 2,
+                                 "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                 "type" : "string"
                               },
                               "zone" : {
                                  "description" : "Name of the zone this VNet belongs to.",
@@ -15236,9 +15257,10 @@ const apiSchema = [
                                     },
                                     "zone" : {
                                        "description" : "The SDN zone object identifier.",
-                                       "format" : "pve-sdn-zone-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -15278,9 +15300,10 @@ const apiSchema = [
                                     },
                                     "zone" : {
                                        "description" : "The SDN zone object identifier.",
-                                       "format" : "pve-sdn-zone-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -15787,9 +15810,10 @@ const apiSchema = [
                                     },
                                     "zone" : {
                                        "description" : "The SDN zone object identifier.",
-                                       "format" : "pve-sdn-zone-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  },
                                  "type" : "object"
@@ -16356,9 +16380,10 @@ const apiSchema = [
                               },
                               "zone" : {
                                  "description" : "The SDN zone object identifier.",
-                                 "format" : "pve-sdn-zone-id",
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "maxLength" : 8,
+                                 "minLength" : 2,
+                                 "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                 "type" : "string"
                               }
                            },
                            "type" : "object"
@@ -16396,9 +16421,10 @@ const apiSchema = [
                                  "properties" : {
                                     "controller" : {
                                        "description" : "The SDN controller object identifier.",
-                                       "format" : "pve-sdn-controller-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 64,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "lock-token" : {
                                        "description" : "the token for unlocking the global SDN configuration",
@@ -16432,9 +16458,10 @@ const apiSchema = [
                                  "properties" : {
                                     "controller" : {
                                        "description" : "The SDN controller object identifier.",
-                                       "format" : "pve-sdn-controller-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 64,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "pending" : {
                                        "description" : "Display pending config.",
@@ -16632,9 +16659,10 @@ const apiSchema = [
                                     },
                                     "controller" : {
                                        "description" : "The SDN controller object identifier.",
-                                       "format" : "pve-sdn-controller-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 64,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "delete" : {
                                        "description" : "A list of settings you want to delete.",
@@ -16686,9 +16714,11 @@ const apiSchema = [
                                     "isis-net" : {
                                        "description" : "Network Entity title for this node in the IS-IS network.",
                                        "format" : "pve-sdn-isis-net",
+                                       "maxLength" : 50,
+                                       "minLength" : 20,
                                        "optional" : 1,
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "pattern" : "[a-fA-F0-9]{2}(\\.[a-fA-F0-9]{4}){3,9}\\.[a-fA-F0-9]{2}",
+                                       "type" : "string"
                                     },
                                     "lock-token" : {
                                        "description" : "the token for unlocking the global SDN configuration",
@@ -16712,6 +16742,20 @@ const apiSchema = [
                                     "peers" : {
                                        "description" : "peers address list.",
                                        "format" : "ip-list",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "route-map-in" : {
+                                       "description" : "Route Map that should be applied for incoming routes",
+                                       "format" : "pve-sdn-route-map-id",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "route-map-out" : {
+                                       "description" : "Route Map that should be applied for outgoing routes",
+                                       "format" : "pve-sdn-route-map-id",
                                        "optional" : 1,
                                        "type" : "string",
                                        "typetext" : "<string>"
@@ -16960,9 +17004,10 @@ const apiSchema = [
                               },
                               "controller" : {
                                  "description" : "The SDN controller object identifier.",
-                                 "format" : "pve-sdn-controller-id",
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "maxLength" : 64,
+                                 "minLength" : 2,
+                                 "pattern" : "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]",
+                                 "type" : "string"
                               },
                               "ebgp" : {
                                  "description" : "Enable eBGP (remote-as external).",
@@ -16999,9 +17044,11 @@ const apiSchema = [
                               "isis-net" : {
                                  "description" : "Network Entity title for this node in the IS-IS network.",
                                  "format" : "pve-sdn-isis-net",
+                                 "maxLength" : 50,
+                                 "minLength" : 20,
                                  "optional" : 1,
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "pattern" : "[a-fA-F0-9]{2}(\\.[a-fA-F0-9]{4}){3,9}\\.[a-fA-F0-9]{2}",
+                                 "type" : "string"
                               },
                               "lock-token" : {
                                  "description" : "the token for unlocking the global SDN configuration",
@@ -17025,6 +17072,20 @@ const apiSchema = [
                               "peers" : {
                                  "description" : "peers address list.",
                                  "format" : "ip-list",
+                                 "optional" : 1,
+                                 "type" : "string",
+                                 "typetext" : "<string>"
+                              },
+                              "route-map-in" : {
+                                 "description" : "Route Map that should be applied for incoming routes",
+                                 "format" : "pve-sdn-route-map-id",
+                                 "optional" : 1,
+                                 "type" : "string",
+                                 "typetext" : "<string>"
+                              },
+                              "route-map-out" : {
+                                 "description" : "Route Map that should be applied for outgoing routes",
+                                 "format" : "pve-sdn-route-map-id",
                                  "optional" : 1,
                                  "type" : "string",
                                  "typetext" : "<string>"
@@ -17078,9 +17139,9 @@ const apiSchema = [
                                        "properties" : {
                                           "ipam" : {
                                              "description" : "The SDN ipam object identifier.",
-                                             "format" : "pve-sdn-ipam-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -17110,9 +17171,9 @@ const apiSchema = [
                                  "properties" : {
                                     "ipam" : {
                                        "description" : "The SDN ipam object identifier.",
-                                       "format" : "pve-sdn-ipam-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "lock-token" : {
                                        "description" : "the token for unlocking the global SDN configuration",
@@ -17146,9 +17207,9 @@ const apiSchema = [
                                  "properties" : {
                                     "ipam" : {
                                        "description" : "The SDN ipam object identifier.",
-                                       "format" : "pve-sdn-ipam-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -17196,9 +17257,9 @@ const apiSchema = [
                                     },
                                     "ipam" : {
                                        "description" : "The SDN ipam object identifier.",
-                                       "format" : "pve-sdn-ipam-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "lock-token" : {
                                        "description" : "the token for unlocking the global SDN configuration",
@@ -17306,9 +17367,9 @@ const apiSchema = [
                               },
                               "ipam" : {
                                  "description" : "The SDN ipam object identifier.",
-                                 "format" : "pve-sdn-ipam-id",
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "minLength" : 2,
+                                 "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                 "type" : "string"
                               },
                               "lock-token" : {
                                  "description" : "the token for unlocking the global SDN configuration",
@@ -17377,9 +17438,9 @@ const apiSchema = [
                                  "properties" : {
                                     "dns" : {
                                        "description" : "The SDN dns object identifier.",
-                                       "format" : "pve-sdn-dns-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "lock-token" : {
                                        "description" : "the token for unlocking the global SDN configuration",
@@ -17413,9 +17474,9 @@ const apiSchema = [
                                  "properties" : {
                                     "dns" : {
                                        "description" : "The SDN dns object identifier.",
-                                       "format" : "pve-sdn-dns-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     }
                                  }
                               },
@@ -17457,9 +17518,9 @@ const apiSchema = [
                                     },
                                     "dns" : {
                                        "description" : "The SDN dns object identifier.",
-                                       "format" : "pve-sdn-dns-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "fingerprint" : {
                                        "description" : "Certificate SHA 256 fingerprint.",
@@ -17570,9 +17631,9 @@ const apiSchema = [
                            "properties" : {
                               "dns" : {
                                  "description" : "The SDN dns object identifier.",
-                                 "format" : "pve-sdn-dns-id",
-                                 "type" : "string",
-                                 "typetext" : "<string>"
+                                 "minLength" : 2,
+                                 "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                 "type" : "string"
                               },
                               "fingerprint" : {
                                  "description" : "Certificate SHA 256 fingerprint.",
@@ -17657,8 +17718,10 @@ const apiSchema = [
                                           "id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -17686,8 +17749,10 @@ const apiSchema = [
                                           "id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -17745,6 +17810,9 @@ const apiSchema = [
                                           "id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                              "type" : "string"
                                           },
                                           "ip6_prefix" : {
@@ -17764,13 +17832,36 @@ const apiSchema = [
                                              "optional" : 1,
                                              "type" : "string"
                                           },
+                                          "persistent_keepalive" : {
+                                             "description" : "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "maximum" : 65535,
+                                             "minimum" : 0,
+                                             "optional" : 1,
+                                             "type" : "number",
+                                             "type-property" : "protocol"
+                                          },
                                           "protocol" : {
                                              "description" : "Type of configuration entry in an SDN Fabric section config",
                                              "enum" : [
                                                 "openfabric",
-                                                "ospf"
+                                                "ospf",
+                                                "wireguard"
                                              ],
                                              "type" : "string"
+                                          },
+                                          "route_filter" : {
+                                             "description" : "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+                                             "format" : "pve-sdn-prefix-list-id",
+                                             "instance-types" : [
+                                                "ospf",
+                                                "openfabric"
+                                             ],
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "type-property" : "protocol"
                                           }
                                        },
                                        "type" : "object"
@@ -17814,7 +17905,8 @@ const apiSchema = [
                                                    "items" : {
                                                       "enum" : [
                                                          "hello_interval",
-                                                         "csnp_interval"
+                                                         "csnp_interval",
+                                                         "route_filter"
                                                       ],
                                                       "type" : "string"
                                                    },
@@ -17827,7 +17919,22 @@ const apiSchema = [
                                                    ],
                                                    "items" : {
                                                       "enum" : [
-                                                         "area"
+                                                         "area",
+                                                         "redistribute",
+                                                         "route_filter"
+                                                      ],
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array"
+                                                },
+                                                {
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "items" : {
+                                                      "enum" : [
+                                                         "persistent_keepalive"
                                                       ],
                                                       "type" : "string"
                                                    },
@@ -17861,8 +17968,10 @@ const apiSchema = [
                                           "id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "ip6_prefix" : {
                                              "description" : "The IP prefix for Node IPs",
@@ -17884,13 +17993,38 @@ const apiSchema = [
                                              "type" : "string",
                                              "typetext" : "<string>"
                                           },
+                                          "persistent_keepalive" : {
+                                             "description" : "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "maximum" : 65535,
+                                             "minimum" : 0,
+                                             "optional" : 1,
+                                             "type" : "number",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<number> (0 - 65535)"
+                                          },
                                           "protocol" : {
                                              "description" : "Type of configuration entry in an SDN Fabric section config",
                                              "enum" : [
                                                 "openfabric",
-                                                "ospf"
+                                                "ospf",
+                                                "wireguard"
                                              ],
                                              "type" : "string"
+                                          },
+                                          "route_filter" : {
+                                             "description" : "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+                                             "format" : "pve-sdn-prefix-list-id",
+                                             "instance-types" : [
+                                                "ospf",
+                                                "openfabric"
+                                             ],
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<string>"
                                           }
                                        }
                                     },
@@ -17983,6 +18117,9 @@ const apiSchema = [
                                        "id" : {
                                           "description" : "Identifier for SDN fabrics",
                                           "format" : "pve-sdn-fabric-id",
+                                          "maxLength" : 8,
+                                          "minLength" : 2,
+                                          "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                           "type" : "string"
                                        },
                                        "ip6_prefix" : {
@@ -18002,13 +18139,36 @@ const apiSchema = [
                                           "optional" : 1,
                                           "type" : "string"
                                        },
+                                       "persistent_keepalive" : {
+                                          "description" : "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "maximum" : 65535,
+                                          "minimum" : 0,
+                                          "optional" : 1,
+                                          "type" : "number",
+                                          "type-property" : "protocol"
+                                       },
                                        "protocol" : {
                                           "description" : "Type of configuration entry in an SDN Fabric section config",
                                           "enum" : [
                                              "openfabric",
-                                             "ospf"
+                                             "ospf",
+                                             "wireguard"
                                           ],
                                           "type" : "string"
+                                       },
+                                       "route_filter" : {
+                                          "description" : "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+                                          "format" : "pve-sdn-prefix-list-id",
+                                          "instance-types" : [
+                                             "ospf",
+                                             "openfabric"
+                                          ],
+                                          "optional" : 1,
+                                          "type" : "string",
+                                          "type-property" : "protocol"
                                        }
                                     },
                                     "type" : "object"
@@ -18073,8 +18233,10 @@ const apiSchema = [
                                     "id" : {
                                        "description" : "Identifier for SDN fabrics",
                                        "format" : "pve-sdn-fabric-id",
-                                       "type" : "string",
-                                       "typetext" : "<string>"
+                                       "maxLength" : 8,
+                                       "minLength" : 2,
+                                       "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                       "type" : "string"
                                     },
                                     "ip6_prefix" : {
                                        "description" : "The IP prefix for Node IPs",
@@ -18096,13 +18258,38 @@ const apiSchema = [
                                        "type" : "string",
                                        "typetext" : "<string>"
                                     },
+                                    "persistent_keepalive" : {
+                                       "description" : "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+                                       "instance-types" : [
+                                          "wireguard"
+                                       ],
+                                       "maximum" : 65535,
+                                       "minimum" : 0,
+                                       "optional" : 1,
+                                       "type" : "number",
+                                       "type-property" : "protocol",
+                                       "typetext" : "<number> (0 - 65535)"
+                                    },
                                     "protocol" : {
                                        "description" : "Type of configuration entry in an SDN Fabric section config",
                                        "enum" : [
                                           "openfabric",
-                                          "ospf"
+                                          "ospf",
+                                          "wireguard"
                                        ],
                                        "type" : "string"
+                                    },
+                                    "route_filter" : {
+                                       "description" : "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+                                       "format" : "pve-sdn-prefix-list-id",
+                                       "instance-types" : [
+                                          "ospf",
+                                          "openfabric"
+                                       ],
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "type-property" : "protocol",
+                                       "typetext" : "<string>"
                                     }
                                  }
                               },
@@ -18141,8 +18328,10 @@ const apiSchema = [
                                                 "fabric_id" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "node_id" : {
                                                    "description" : "Identifier for nodes in an SDN fabric",
@@ -18186,8 +18375,10 @@ const apiSchema = [
                                                 "fabric_id" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "node_id" : {
                                                    "description" : "Identifier for nodes in an SDN fabric",
@@ -18224,15 +18415,40 @@ const apiSchema = [
                                           },
                                           "returns" : {
                                              "properties" : {
+                                                "allowed_ips" : {
+                                                   "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "items" : {
+                                                      "format" : "FullRangeCIDR",
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array",
+                                                   "type-property" : "protocol"
+                                                },
                                                 "digest" : {
                                                    "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
                                                    "maxLength" : 64,
                                                    "optional" : 1,
                                                    "type" : "string"
                                                 },
+                                                "endpoint" : {
+                                                   "description" : "The endpoint used for connecting to this node.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol"
+                                                },
                                                 "fabric_id" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                                    "type" : "string"
                                                 },
                                                 "interfaces" : {
@@ -18293,6 +18509,19 @@ const apiSchema = [
                                                                   "type" : "string"
                                                                }
                                                             },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      },
+                                                      {
+                                                         "description" : "List of WireGuard network interfaces for this node.",
+                                                         "instance-types" : [
+                                                            "wireguard"
+                                                         ],
+                                                         "items" : {
+                                                            "description" : "WireGuard network interface",
+                                                            "format" : "pve-sdn-fabric-wireguard-interface",
                                                             "type" : "string"
                                                          },
                                                          "optional" : 1,
@@ -18324,13 +18553,80 @@ const apiSchema = [
                                                    "format" : "pve-node",
                                                    "type" : "string"
                                                 },
+                                                "peers" : {
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "items" : {
+                                                      "format" : {
+                                                         "endpoint" : {
+                                                            "description" : "Override for the endpoint settings in the node section.",
+                                                            "optional" : 1,
+                                                            "type" : "string"
+                                                         },
+                                                         "iface" : {
+                                                            "description" : "The interface of this node that uses this peer definition.",
+                                                            "type" : "string"
+                                                         },
+                                                         "node" : {
+                                                            "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                            "type" : "string"
+                                                         },
+                                                         "node_iface" : {
+                                                            "description" : "The interface of the other node, if it is internal",
+                                                            "optional" : 1,
+                                                            "type" : "string"
+                                                         },
+                                                         "skip_route_generation" : {
+                                                            "default" : 0,
+                                                            "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                            "optional" : 1,
+                                                            "type" : "boolean"
+                                                         },
+                                                         "type" : {
+                                                            "enum" : [
+                                                               "internal",
+                                                               "external"
+                                                            ],
+                                                            "type" : "string"
+                                                         }
+                                                      },
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array",
+                                                   "type-property" : "protocol"
+                                                },
                                                 "protocol" : {
                                                    "description" : "Type of configuration entry in an SDN Fabric section config",
                                                    "enum" : [
                                                       "openfabric",
-                                                      "ospf"
+                                                      "ospf",
+                                                      "wireguard"
                                                    ],
                                                    "type" : "string"
+                                                },
+                                                "public_key" : {
+                                                   "description" : "The public key for the external node.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol"
+                                                },
+                                                "role" : {
+                                                   "description" : "The role of this node in the WireGuard fabric.",
+                                                   "enum" : [
+                                                      "internal",
+                                                      "external"
+                                                   ],
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol"
                                                 }
                                              }
                                           }
@@ -18342,17 +18638,59 @@ const apiSchema = [
                                           "name" : "update_node",
                                           "parameters" : {
                                              "properties" : {
-                                                "delete" : {
+                                                "allowed_ips" : {
+                                                   "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
                                                    "items" : {
-                                                      "enum" : [
-                                                         "interfaces",
-                                                         "ip",
-                                                         "ip6"
-                                                      ],
+                                                      "format" : "FullRangeCIDR",
                                                       "type" : "string"
                                                    },
                                                    "optional" : 1,
                                                    "type" : "array",
+                                                   "type-property" : "protocol",
+                                                   "typetext" : "<array>"
+                                                },
+                                                "delete" : {
+                                                   "oneOf" : [
+                                                      {
+                                                         "instance-types" : [
+                                                            "openfabric",
+                                                            "ospf"
+                                                         ],
+                                                         "items" : {
+                                                            "enum" : [
+                                                               "interfaces",
+                                                               "ip",
+                                                               "ip6"
+                                                            ],
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      },
+                                                      {
+                                                         "instance-types" : [
+                                                            "wireguard"
+                                                         ],
+                                                         "items" : {
+                                                            "enum" : [
+                                                               "allowed_ips",
+                                                               "endpoint",
+                                                               "interfaces",
+                                                               "ip",
+                                                               "ip6",
+                                                               "peers"
+                                                            ],
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      }
+                                                   ],
+                                                   "type" : "array",
+                                                   "type-property" : "protocol",
                                                    "typetext" : "<array>"
                                                 },
                                                 "digest" : {
@@ -18362,11 +18700,23 @@ const apiSchema = [
                                                    "type" : "string",
                                                    "typetext" : "<string>"
                                                 },
+                                                "endpoint" : {
+                                                   "description" : "The endpoint used for connecting to this node.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol",
+                                                   "typetext" : "<string>"
+                                                },
                                                 "fabric_id" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "interfaces" : {
                                                    "oneOf" : [
@@ -18426,6 +18776,19 @@ const apiSchema = [
                                                                   "type" : "string"
                                                                }
                                                             },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      },
+                                                      {
+                                                         "description" : "List of WireGuard network interfaces for this node.",
+                                                         "instance-types" : [
+                                                            "wireguard"
+                                                         ],
+                                                         "items" : {
+                                                            "description" : "WireGuard network interface",
+                                                            "format" : "pve-sdn-fabric-wireguard-interface",
                                                             "type" : "string"
                                                          },
                                                          "optional" : 1,
@@ -18462,13 +18825,82 @@ const apiSchema = [
                                                    "type" : "string",
                                                    "typetext" : "<string>"
                                                 },
+                                                "peers" : {
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "items" : {
+                                                      "format" : {
+                                                         "endpoint" : {
+                                                            "description" : "Override for the endpoint settings in the node section.",
+                                                            "optional" : 1,
+                                                            "type" : "string"
+                                                         },
+                                                         "iface" : {
+                                                            "description" : "The interface of this node that uses this peer definition.",
+                                                            "type" : "string"
+                                                         },
+                                                         "node" : {
+                                                            "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                            "type" : "string"
+                                                         },
+                                                         "node_iface" : {
+                                                            "description" : "The interface of the other node, if it is internal",
+                                                            "optional" : 1,
+                                                            "type" : "string"
+                                                         },
+                                                         "skip_route_generation" : {
+                                                            "default" : 0,
+                                                            "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                            "optional" : 1,
+                                                            "type" : "boolean"
+                                                         },
+                                                         "type" : {
+                                                            "enum" : [
+                                                               "internal",
+                                                               "external"
+                                                            ],
+                                                            "type" : "string"
+                                                         }
+                                                      },
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array",
+                                                   "type-property" : "protocol",
+                                                   "typetext" : "<array>"
+                                                },
                                                 "protocol" : {
                                                    "description" : "Type of configuration entry in an SDN Fabric section config",
                                                    "enum" : [
                                                       "openfabric",
-                                                      "ospf"
+                                                      "ospf",
+                                                      "wireguard"
                                                    ],
                                                    "type" : "string"
+                                                },
+                                                "public_key" : {
+                                                   "description" : "The public key for the external node.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol",
+                                                   "typetext" : "<string>"
+                                                },
+                                                "role" : {
+                                                   "description" : "The role of this node in the WireGuard fabric.",
+                                                   "enum" : [
+                                                      "internal",
+                                                      "external"
+                                                   ],
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "type-property" : "protocol"
                                                 }
                                              }
                                           },
@@ -18513,8 +18945,10 @@ const apiSchema = [
                                           "fabric_id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "pending" : {
                                              "description" : "Display pending config.",
@@ -18543,15 +18977,40 @@ const apiSchema = [
                                     "returns" : {
                                        "items" : {
                                           "properties" : {
+                                             "allowed_ips" : {
+                                                "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "items" : {
+                                                   "format" : "FullRangeCIDR",
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array",
+                                                "type-property" : "protocol"
+                                             },
                                              "digest" : {
                                                 "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
                                                 "maxLength" : 64,
                                                 "optional" : 1,
                                                 "type" : "string"
                                              },
+                                             "endpoint" : {
+                                                "description" : "The endpoint used for connecting to this node.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
+                                             },
                                              "fabric_id" : {
                                                 "description" : "Identifier for SDN fabrics",
                                                 "format" : "pve-sdn-fabric-id",
+                                                "maxLength" : 8,
+                                                "minLength" : 2,
+                                                "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                                 "type" : "string"
                                              },
                                              "interfaces" : {
@@ -18616,6 +19075,19 @@ const apiSchema = [
                                                       },
                                                       "optional" : 1,
                                                       "type" : "array"
+                                                   },
+                                                   {
+                                                      "description" : "List of WireGuard network interfaces for this node.",
+                                                      "instance-types" : [
+                                                         "wireguard"
+                                                      ],
+                                                      "items" : {
+                                                         "description" : "WireGuard network interface",
+                                                         "format" : "pve-sdn-fabric-wireguard-interface",
+                                                         "type" : "string"
+                                                      },
+                                                      "optional" : 1,
+                                                      "type" : "array"
                                                    }
                                                 ],
                                                 "type" : "array",
@@ -18643,13 +19115,80 @@ const apiSchema = [
                                                 "format" : "pve-node",
                                                 "type" : "string"
                                              },
+                                             "peers" : {
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "items" : {
+                                                   "format" : {
+                                                      "endpoint" : {
+                                                         "description" : "Override for the endpoint settings in the node section.",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "iface" : {
+                                                         "description" : "The interface of this node that uses this peer definition.",
+                                                         "type" : "string"
+                                                      },
+                                                      "node" : {
+                                                         "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                         "type" : "string"
+                                                      },
+                                                      "node_iface" : {
+                                                         "description" : "The interface of the other node, if it is internal",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "skip_route_generation" : {
+                                                         "default" : 0,
+                                                         "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                         "optional" : 1,
+                                                         "type" : "boolean"
+                                                      },
+                                                      "type" : {
+                                                         "enum" : [
+                                                            "internal",
+                                                            "external"
+                                                         ],
+                                                         "type" : "string"
+                                                      }
+                                                   },
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array",
+                                                "type-property" : "protocol"
+                                             },
                                              "protocol" : {
                                                 "description" : "Type of configuration entry in an SDN Fabric section config",
                                                 "enum" : [
                                                    "openfabric",
-                                                   "ospf"
+                                                   "ospf",
+                                                   "wireguard"
                                                 ],
                                                 "type" : "string"
+                                             },
+                                             "public_key" : {
+                                                "description" : "The public key for the external node.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
+                                             },
+                                             "role" : {
+                                                "description" : "The role of this node in the WireGuard fabric.",
+                                                "enum" : [
+                                                   "internal",
+                                                   "external"
+                                                ],
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
                                              }
                                           },
                                           "type" : "object"
@@ -18670,6 +19209,20 @@ const apiSchema = [
                                     "name" : "add_node",
                                     "parameters" : {
                                        "properties" : {
+                                          "allowed_ips" : {
+                                             "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "items" : {
+                                                "format" : "FullRangeCIDR",
+                                                "type" : "string"
+                                             },
+                                             "optional" : 1,
+                                             "type" : "array",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<array>"
+                                          },
                                           "digest" : {
                                              "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
                                              "maxLength" : 64,
@@ -18677,11 +19230,23 @@ const apiSchema = [
                                              "type" : "string",
                                              "typetext" : "<string>"
                                           },
+                                          "endpoint" : {
+                                             "description" : "The endpoint used for connecting to this node.",
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<string>"
+                                          },
                                           "fabric_id" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "interfaces" : {
                                              "oneOf" : [
@@ -18745,6 +19310,19 @@ const apiSchema = [
                                                    },
                                                    "optional" : 1,
                                                    "type" : "array"
+                                                },
+                                                {
+                                                   "description" : "List of WireGuard network interfaces for this node.",
+                                                   "instance-types" : [
+                                                      "wireguard"
+                                                   ],
+                                                   "items" : {
+                                                      "description" : "WireGuard network interface",
+                                                      "format" : "pve-sdn-fabric-wireguard-interface",
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array"
                                                 }
                                              ],
                                              "type" : "array",
@@ -18777,13 +19355,82 @@ const apiSchema = [
                                              "type" : "string",
                                              "typetext" : "<string>"
                                           },
+                                          "peers" : {
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "items" : {
+                                                "format" : {
+                                                   "endpoint" : {
+                                                      "description" : "Override for the endpoint settings in the node section.",
+                                                      "optional" : 1,
+                                                      "type" : "string"
+                                                   },
+                                                   "iface" : {
+                                                      "description" : "The interface of this node that uses this peer definition.",
+                                                      "type" : "string"
+                                                   },
+                                                   "node" : {
+                                                      "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                      "type" : "string"
+                                                   },
+                                                   "node_iface" : {
+                                                      "description" : "The interface of the other node, if it is internal",
+                                                      "optional" : 1,
+                                                      "type" : "string"
+                                                   },
+                                                   "skip_route_generation" : {
+                                                      "default" : 0,
+                                                      "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                      "optional" : 1,
+                                                      "type" : "boolean"
+                                                   },
+                                                   "type" : {
+                                                      "enum" : [
+                                                         "internal",
+                                                         "external"
+                                                      ],
+                                                      "type" : "string"
+                                                   }
+                                                },
+                                                "type" : "string"
+                                             },
+                                             "optional" : 1,
+                                             "type" : "array",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<array>"
+                                          },
                                           "protocol" : {
                                              "description" : "Type of configuration entry in an SDN Fabric section config",
                                              "enum" : [
                                                 "openfabric",
-                                                "ospf"
+                                                "ospf",
+                                                "wireguard"
                                              ],
                                              "type" : "string"
+                                          },
+                                          "public_key" : {
+                                             "description" : "The public key for the external node.",
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "type-property" : "protocol",
+                                             "typetext" : "<string>"
+                                          },
+                                          "role" : {
+                                             "description" : "The role of this node in the WireGuard fabric.",
+                                             "enum" : [
+                                                "internal",
+                                                "external"
+                                             ],
+                                             "instance-types" : [
+                                                "wireguard"
+                                             ],
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "type-property" : "protocol"
                                           }
                                        }
                                     },
@@ -18846,15 +19493,40 @@ const apiSchema = [
                               "returns" : {
                                  "items" : {
                                     "properties" : {
+                                       "allowed_ips" : {
+                                          "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "items" : {
+                                             "format" : "FullRangeCIDR",
+                                             "type" : "string"
+                                          },
+                                          "optional" : 1,
+                                          "type" : "array",
+                                          "type-property" : "protocol"
+                                       },
                                        "digest" : {
                                           "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
                                           "maxLength" : 64,
                                           "optional" : 1,
                                           "type" : "string"
                                        },
+                                       "endpoint" : {
+                                          "description" : "The endpoint used for connecting to this node.",
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "optional" : 1,
+                                          "type" : "string",
+                                          "type-property" : "protocol"
+                                       },
                                        "fabric_id" : {
                                           "description" : "Identifier for SDN fabrics",
                                           "format" : "pve-sdn-fabric-id",
+                                          "maxLength" : 8,
+                                          "minLength" : 2,
+                                          "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                           "type" : "string"
                                        },
                                        "interfaces" : {
@@ -18919,6 +19591,19 @@ const apiSchema = [
                                                 },
                                                 "optional" : 1,
                                                 "type" : "array"
+                                             },
+                                             {
+                                                "description" : "List of WireGuard network interfaces for this node.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "items" : {
+                                                   "description" : "WireGuard network interface",
+                                                   "format" : "pve-sdn-fabric-wireguard-interface",
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array"
                                              }
                                           ],
                                           "type" : "array",
@@ -18946,13 +19631,80 @@ const apiSchema = [
                                           "format" : "pve-node",
                                           "type" : "string"
                                        },
+                                       "peers" : {
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "items" : {
+                                             "format" : {
+                                                "endpoint" : {
+                                                   "description" : "Override for the endpoint settings in the node section.",
+                                                   "optional" : 1,
+                                                   "type" : "string"
+                                                },
+                                                "iface" : {
+                                                   "description" : "The interface of this node that uses this peer definition.",
+                                                   "type" : "string"
+                                                },
+                                                "node" : {
+                                                   "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                   "type" : "string"
+                                                },
+                                                "node_iface" : {
+                                                   "description" : "The interface of the other node, if it is internal",
+                                                   "optional" : 1,
+                                                   "type" : "string"
+                                                },
+                                                "skip_route_generation" : {
+                                                   "default" : 0,
+                                                   "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                   "optional" : 1,
+                                                   "type" : "boolean"
+                                                },
+                                                "type" : {
+                                                   "enum" : [
+                                                      "internal",
+                                                      "external"
+                                                   ],
+                                                   "type" : "string"
+                                                }
+                                             },
+                                             "type" : "string"
+                                          },
+                                          "optional" : 1,
+                                          "type" : "array",
+                                          "type-property" : "protocol"
+                                       },
                                        "protocol" : {
                                           "description" : "Type of configuration entry in an SDN Fabric section config",
                                           "enum" : [
                                              "openfabric",
-                                             "ospf"
+                                             "ospf",
+                                             "wireguard"
                                           ],
                                           "type" : "string"
+                                       },
+                                       "public_key" : {
+                                          "description" : "The public key for the external node.",
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "optional" : 1,
+                                          "type" : "string",
+                                          "type-property" : "protocol"
+                                       },
+                                       "role" : {
+                                          "description" : "The role of this node in the WireGuard fabric.",
+                                          "enum" : [
+                                             "internal",
+                                             "external"
+                                          ],
+                                          "instance-types" : [
+                                             "wireguard"
+                                          ],
+                                          "optional" : 1,
+                                          "type" : "string",
+                                          "type-property" : "protocol"
                                        }
                                     },
                                     "type" : "object"
@@ -19043,6 +19795,9 @@ const apiSchema = [
                                              "id" : {
                                                 "description" : "Identifier for SDN fabrics",
                                                 "format" : "pve-sdn-fabric-id",
+                                                "maxLength" : 8,
+                                                "minLength" : 2,
+                                                "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                                 "type" : "string"
                                              },
                                              "ip6_prefix" : {
@@ -19062,13 +19817,36 @@ const apiSchema = [
                                                 "optional" : 1,
                                                 "type" : "string"
                                              },
+                                             "persistent_keepalive" : {
+                                                "description" : "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "maximum" : 65535,
+                                                "minimum" : 0,
+                                                "optional" : 1,
+                                                "type" : "number",
+                                                "type-property" : "protocol"
+                                             },
                                              "protocol" : {
                                                 "description" : "Type of configuration entry in an SDN Fabric section config",
                                                 "enum" : [
                                                    "openfabric",
-                                                   "ospf"
+                                                   "ospf",
+                                                   "wireguard"
                                                 ],
                                                 "type" : "string"
+                                             },
+                                             "route_filter" : {
+                                                "description" : "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+                                                "format" : "pve-sdn-prefix-list-id",
+                                                "instance-types" : [
+                                                   "ospf",
+                                                   "openfabric"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
                                              }
                                           },
                                           "type" : "object"
@@ -19078,15 +19856,40 @@ const apiSchema = [
                                     "nodes" : {
                                        "items" : {
                                           "properties" : {
+                                             "allowed_ips" : {
+                                                "description" : "A list of IPs that are routable via this node in the WireGuard fabric.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "items" : {
+                                                   "format" : "FullRangeCIDR",
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array",
+                                                "type-property" : "protocol"
+                                             },
                                              "digest" : {
                                                 "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
                                                 "maxLength" : 64,
                                                 "optional" : 1,
                                                 "type" : "string"
                                              },
+                                             "endpoint" : {
+                                                "description" : "The endpoint used for connecting to this node.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
+                                             },
                                              "fabric_id" : {
                                                 "description" : "Identifier for SDN fabrics",
                                                 "format" : "pve-sdn-fabric-id",
+                                                "maxLength" : 8,
+                                                "minLength" : 2,
+                                                "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
                                                 "type" : "string"
                                              },
                                              "interfaces" : {
@@ -19151,6 +19954,19 @@ const apiSchema = [
                                                       },
                                                       "optional" : 1,
                                                       "type" : "array"
+                                                   },
+                                                   {
+                                                      "description" : "List of WireGuard network interfaces for this node.",
+                                                      "instance-types" : [
+                                                         "wireguard"
+                                                      ],
+                                                      "items" : {
+                                                         "description" : "WireGuard network interface",
+                                                         "format" : "pve-sdn-fabric-wireguard-interface",
+                                                         "type" : "string"
+                                                      },
+                                                      "optional" : 1,
+                                                      "type" : "array"
                                                    }
                                                 ],
                                                 "type" : "array",
@@ -19178,13 +19994,80 @@ const apiSchema = [
                                                 "format" : "pve-node",
                                                 "type" : "string"
                                              },
+                                             "peers" : {
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "items" : {
+                                                   "format" : {
+                                                      "endpoint" : {
+                                                         "description" : "Override for the endpoint settings in the node section.",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "iface" : {
+                                                         "description" : "The interface of this node that uses this peer definition.",
+                                                         "type" : "string"
+                                                      },
+                                                      "node" : {
+                                                         "description" : "The name of the referenced node section (the external node or the internal peer node).",
+                                                         "type" : "string"
+                                                      },
+                                                      "node_iface" : {
+                                                         "description" : "The interface of the other node, if it is internal",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "skip_route_generation" : {
+                                                         "default" : 0,
+                                                         "description" : "Whether routes for the allowed IPs should be created in the kernel routing table.",
+                                                         "optional" : 1,
+                                                         "type" : "boolean"
+                                                      },
+                                                      "type" : {
+                                                         "enum" : [
+                                                            "internal",
+                                                            "external"
+                                                         ],
+                                                         "type" : "string"
+                                                      }
+                                                   },
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array",
+                                                "type-property" : "protocol"
+                                             },
                                              "protocol" : {
                                                 "description" : "Type of configuration entry in an SDN Fabric section config",
                                                 "enum" : [
                                                    "openfabric",
-                                                   "ospf"
+                                                   "ospf",
+                                                   "wireguard"
                                                 ],
                                                 "type" : "string"
+                                             },
+                                             "public_key" : {
+                                                "description" : "The public key for the external node.",
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
+                                             },
+                                             "role" : {
+                                                "description" : "The role of this node in the WireGuard fabric.",
+                                                "enum" : [
+                                                   "internal",
+                                                   "external"
+                                                ],
+                                                "instance-types" : [
+                                                   "wireguard"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string",
+                                                "type-property" : "protocol"
                                              }
                                           },
                                           "type" : "object"
@@ -19239,6 +20122,1497 @@ const apiSchema = [
                   "leaf" : 0,
                   "path" : "/cluster/sdn/fabrics",
                   "text" : "fabrics"
+               },
+               {
+                  "children" : [
+                     {
+                        "children" : [
+                           {
+                              "children" : [
+                                 {
+                                    "info" : {
+                                       "DELETE" : {
+                                          "allowtoken" : 1,
+                                          "description" : "Delete Prefix List Entry",
+                                          "method" : "DELETE",
+                                          "name" : "delete_prefix_list_entry",
+                                          "parameters" : {
+                                             "properties" : {
+                                                "id" : {
+                                                   "description" : "The SDN prefix list identifier",
+                                                   "format" : "pve-sdn-prefix-list-id",
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                },
+                                                "lock-token" : {
+                                                   "description" : "the token for unlocking the global SDN configuration",
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                }
+                                             }
+                                          },
+                                          "permissions" : {
+                                             "check" : [
+                                                "perm",
+                                                "/sdn/prefix-lists/{id}",
+                                                [
+                                                   "SDN.Allocate"
+                                                ]
+                                             ]
+                                          },
+                                          "protected" : 1,
+                                          "returns" : {
+                                             "type" : "null"
+                                          }
+                                       },
+                                       "GET" : {
+                                          "allowtoken" : 1,
+                                          "description" : "Get Prefix List Entry",
+                                          "method" : "GET",
+                                          "name" : "get_prefix_list_entry",
+                                          "parameters" : {
+                                             "properties" : {
+                                                "id" : {
+                                                   "description" : "The SDN prefix list identifier",
+                                                   "format" : "pve-sdn-prefix-list-id",
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                }
+                                             }
+                                          },
+                                          "permissions" : {
+                                             "check" : [
+                                                "perm",
+                                                "/sdn/prefix-lists/{id}",
+                                                [
+                                                   "SDN.Audit"
+                                                ]
+                                             ]
+                                          },
+                                          "returns" : {
+                                             "type" : "object"
+                                          }
+                                       },
+                                       "PUT" : {
+                                          "allowtoken" : 1,
+                                          "description" : "Update Prefix List Entry",
+                                          "method" : "PUT",
+                                          "name" : "update_prefix_list_entry",
+                                          "parameters" : {
+                                             "properties" : {
+                                                "action" : {
+                                                   "enum" : [
+                                                      "permit",
+                                                      "deny"
+                                                   ],
+                                                   "optional" : 1,
+                                                   "type" : "string"
+                                                },
+                                                "delete" : {
+                                                   "items" : {
+                                                      "enum" : [
+                                                         "le",
+                                                         "ge",
+                                                         "seq"
+                                                      ],
+                                                      "type" : "string"
+                                                   },
+                                                   "optional" : 1,
+                                                   "type" : "array",
+                                                   "typetext" : "<array>"
+                                                },
+                                                "digest" : {
+                                                   "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                                   "maxLength" : 64,
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                },
+                                                "ge" : {
+                                                   "maximum" : 128,
+                                                   "minimum" : 0,
+                                                   "optional" : 1,
+                                                   "type" : "integer",
+                                                   "typetext" : "<integer> (0 - 128)"
+                                                },
+                                                "le" : {
+                                                   "maximum" : 128,
+                                                   "minimum" : 0,
+                                                   "optional" : 1,
+                                                   "type" : "integer",
+                                                   "typetext" : "<integer> (0 - 128)"
+                                                },
+                                                "lock-token" : {
+                                                   "description" : "the token for unlocking the global SDN configuration",
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                },
+                                                "prefix" : {
+                                                   "format" : "FullRangeCIDR",
+                                                   "optional" : 1,
+                                                   "type" : "string",
+                                                   "typetext" : "<string>"
+                                                },
+                                                "seq" : {
+                                                   "maximum" : 4294967295,
+                                                   "minimum" : 1,
+                                                   "optional" : 1,
+                                                   "type" : "integer",
+                                                   "typetext" : "<integer> (1 - 4294967295)"
+                                                }
+                                             }
+                                          },
+                                          "permissions" : {
+                                             "check" : [
+                                                "perm",
+                                                "/sdn/prefix-lists/{id}",
+                                                [
+                                                   "SDN.Allocate"
+                                                ]
+                                             ]
+                                          },
+                                          "protected" : 1,
+                                          "returns" : {
+                                             "type" : "null"
+                                          }
+                                       }
+                                    },
+                                    "leaf" : 1,
+                                    "path" : "/cluster/sdn/prefix-lists/{id}/entries/{url_seq}",
+                                    "text" : "{url_seq}"
+                                 }
+                              ],
+                              "info" : {
+                                 "GET" : {
+                                    "allowtoken" : 1,
+                                    "description" : "List Prefix List Entries",
+                                    "method" : "GET",
+                                    "name" : "get_prefix_list_entries",
+                                    "parameters" : {
+                                       "properties" : {
+                                          "id" : {
+                                             "description" : "The SDN prefix list identifier",
+                                             "format" : "pve-sdn-prefix-list-id",
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          }
+                                       }
+                                    },
+                                    "permissions" : {
+                                       "check" : [
+                                          "perm",
+                                          "/sdn/prefix-lists/{id}",
+                                          [
+                                             "SDN.Audit"
+                                          ]
+                                       ]
+                                    },
+                                    "returns" : {
+                                       "items" : {
+                                          "properties" : {},
+                                          "type" : "object"
+                                       },
+                                       "links" : [
+                                          {
+                                             "href" : "{seq}",
+                                             "rel" : "child"
+                                          }
+                                       ],
+                                       "type" : "array"
+                                    }
+                                 },
+                                 "POST" : {
+                                    "allowtoken" : 1,
+                                    "description" : "Create Prefix List Entry",
+                                    "method" : "POST",
+                                    "name" : "create_prefix_list_entry",
+                                    "parameters" : {
+                                       "properties" : {
+                                          "action" : {
+                                             "enum" : [
+                                                "permit",
+                                                "deny"
+                                             ],
+                                             "optional" : 0,
+                                             "type" : "string"
+                                          },
+                                          "ge" : {
+                                             "maximum" : 128,
+                                             "minimum" : 0,
+                                             "optional" : 1,
+                                             "type" : "integer",
+                                             "typetext" : "<integer> (0 - 128)"
+                                          },
+                                          "id" : {
+                                             "description" : "The SDN prefix list identifier",
+                                             "format" : "pve-sdn-prefix-list-id",
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          },
+                                          "le" : {
+                                             "maximum" : 128,
+                                             "minimum" : 0,
+                                             "optional" : 1,
+                                             "type" : "integer",
+                                             "typetext" : "<integer> (0 - 128)"
+                                          },
+                                          "lock-token" : {
+                                             "description" : "the token for unlocking the global SDN configuration",
+                                             "optional" : 1,
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          },
+                                          "prefix" : {
+                                             "format" : "FullRangeCIDR",
+                                             "optional" : 0,
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          },
+                                          "seq" : {
+                                             "maximum" : 4294967295,
+                                             "minimum" : 1,
+                                             "optional" : 1,
+                                             "type" : "integer",
+                                             "typetext" : "<integer> (1 - 4294967295)"
+                                          }
+                                       }
+                                    },
+                                    "permissions" : {
+                                       "check" : [
+                                          "perm",
+                                          "/sdn/prefix-lists/{id}",
+                                          [
+                                             "SDN.Allocate"
+                                          ]
+                                       ]
+                                    },
+                                    "protected" : 1,
+                                    "returns" : {
+                                       "type" : "null"
+                                    }
+                                 }
+                              },
+                              "leaf" : 0,
+                              "path" : "/cluster/sdn/prefix-lists/{id}/entries",
+                              "text" : "entries"
+                           }
+                        ],
+                        "info" : {
+                           "DELETE" : {
+                              "allowtoken" : 1,
+                              "description" : "Delete Prefix List",
+                              "method" : "DELETE",
+                              "name" : "delete_prefix_list",
+                              "parameters" : {
+                                 "properties" : {
+                                    "id" : {
+                                       "description" : "The SDN prefix list identifier",
+                                       "format" : "pve-sdn-prefix-list-id",
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "lock-token" : {
+                                       "description" : "the token for unlocking the global SDN configuration",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    }
+                                 }
+                              },
+                              "permissions" : {
+                                 "check" : [
+                                    "perm",
+                                    "/sdn/prefix-lists/{id}",
+                                    [
+                                       "SDN.Allocate"
+                                    ]
+                                 ]
+                              },
+                              "protected" : 1,
+                              "returns" : {
+                                 "type" : "null"
+                              }
+                           },
+                           "GET" : {
+                              "allowtoken" : 1,
+                              "description" : "Get Prefix List",
+                              "method" : "GET",
+                              "name" : "get_prefix_list",
+                              "parameters" : {
+                                 "properties" : {
+                                    "id" : {
+                                       "description" : "The SDN prefix list identifier",
+                                       "format" : "pve-sdn-prefix-list-id",
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    }
+                                 }
+                              },
+                              "permissions" : {
+                                 "check" : [
+                                    "perm",
+                                    "/sdn/prefix-lists/{id}",
+                                    [
+                                       "SDN.Audit"
+                                    ]
+                                 ]
+                              },
+                              "returns" : {
+                                 "type" : "object"
+                              }
+                           },
+                           "PUT" : {
+                              "allowtoken" : 1,
+                              "description" : "Update Prefix List",
+                              "method" : "PUT",
+                              "name" : "update_prefix_list",
+                              "parameters" : {
+                                 "properties" : {
+                                    "delete" : {
+                                       "items" : {
+                                          "enum" : [
+                                             "entries"
+                                          ],
+                                          "type" : "string"
+                                       },
+                                       "optional" : 1,
+                                       "type" : "array",
+                                       "typetext" : "<array>"
+                                    },
+                                    "digest" : {
+                                       "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                       "maxLength" : 64,
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "entries" : {
+                                       "items" : {
+                                          "format" : {
+                                             "action" : {
+                                                "enum" : [
+                                                   "permit",
+                                                   "deny"
+                                                ],
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             },
+                                             "ge" : {
+                                                "maximum" : 128,
+                                                "minimum" : 0,
+                                                "optional" : 1,
+                                                "type" : "integer"
+                                             },
+                                             "le" : {
+                                                "maximum" : 128,
+                                                "minimum" : 0,
+                                                "optional" : 1,
+                                                "type" : "integer"
+                                             },
+                                             "prefix" : {
+                                                "format" : "FullRangeCIDR",
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             },
+                                             "seq" : {
+                                                "maximum" : 4294967295,
+                                                "minimum" : 1,
+                                                "optional" : 1,
+                                                "type" : "integer"
+                                             }
+                                          },
+                                          "type" : "string"
+                                       },
+                                       "optional" : 1,
+                                       "type" : "array",
+                                       "typetext" : "<array>"
+                                    },
+                                    "id" : {
+                                       "description" : "The SDN prefix list identifier",
+                                       "format" : "pve-sdn-prefix-list-id",
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "lock-token" : {
+                                       "description" : "the token for unlocking the global SDN configuration",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    }
+                                 }
+                              },
+                              "permissions" : {
+                                 "check" : [
+                                    "perm",
+                                    "/sdn/prefix-lists/{id}",
+                                    [
+                                       "SDN.Allocate"
+                                    ]
+                                 ]
+                              },
+                              "protected" : 1,
+                              "returns" : {
+                                 "type" : "null"
+                              }
+                           }
+                        },
+                        "leaf" : 0,
+                        "path" : "/cluster/sdn/prefix-lists/{id}",
+                        "text" : "{id}"
+                     }
+                  ],
+                  "info" : {
+                     "GET" : {
+                        "allowtoken" : 1,
+                        "description" : "List Prefix Lists",
+                        "method" : "GET",
+                        "name" : "list_prefix_lists",
+                        "parameters" : {
+                           "properties" : {
+                              "pending" : {
+                                 "description" : "Display pending config.",
+                                 "optional" : 1,
+                                 "type" : "boolean",
+                                 "typetext" : "<boolean>"
+                              },
+                              "running" : {
+                                 "description" : "Display running config.",
+                                 "optional" : 1,
+                                 "type" : "boolean",
+                                 "typetext" : "<boolean>"
+                              },
+                              "verbose" : {
+                                 "description" : "If 0, only returns id - otherwise returns all properties.",
+                                 "optional" : 1,
+                                 "type" : "boolean",
+                                 "typetext" : "<boolean>"
+                              }
+                           }
+                        },
+                        "permissions" : {
+                           "description" : "Only returns prefix list entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions.",
+                           "user" : "all"
+                        },
+                        "returns" : {
+                           "items" : {
+                              "properties" : {},
+                              "type" : "object"
+                           },
+                           "links" : [
+                              {
+                                 "href" : "{id}",
+                                 "rel" : "child"
+                              }
+                           ],
+                           "type" : "array"
+                        }
+                     },
+                     "POST" : {
+                        "allowtoken" : 1,
+                        "description" : "Create Prefix List",
+                        "method" : "POST",
+                        "name" : "create_prefix_list_entry",
+                        "parameters" : {
+                           "properties" : {
+                              "digest" : {
+                                 "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                 "maxLength" : 64,
+                                 "optional" : 1,
+                                 "type" : "string",
+                                 "typetext" : "<string>"
+                              },
+                              "entries" : {
+                                 "items" : {
+                                    "format" : {
+                                       "action" : {
+                                          "enum" : [
+                                             "permit",
+                                             "deny"
+                                          ],
+                                          "optional" : 0,
+                                          "type" : "string"
+                                       },
+                                       "ge" : {
+                                          "maximum" : 128,
+                                          "minimum" : 0,
+                                          "optional" : 1,
+                                          "type" : "integer"
+                                       },
+                                       "le" : {
+                                          "maximum" : 128,
+                                          "minimum" : 0,
+                                          "optional" : 1,
+                                          "type" : "integer"
+                                       },
+                                       "prefix" : {
+                                          "format" : "FullRangeCIDR",
+                                          "optional" : 0,
+                                          "type" : "string"
+                                       },
+                                       "seq" : {
+                                          "maximum" : 4294967295,
+                                          "minimum" : 1,
+                                          "optional" : 1,
+                                          "type" : "integer"
+                                       }
+                                    },
+                                    "type" : "string"
+                                 },
+                                 "optional" : 1,
+                                 "type" : "array",
+                                 "typetext" : "<array>"
+                              },
+                              "id" : {
+                                 "description" : "The SDN prefix list identifier",
+                                 "format" : "pve-sdn-prefix-list-id",
+                                 "type" : "string",
+                                 "typetext" : "<string>"
+                              },
+                              "lock-token" : {
+                                 "description" : "the token for unlocking the global SDN configuration",
+                                 "optional" : 1,
+                                 "type" : "string",
+                                 "typetext" : "<string>"
+                              }
+                           }
+                        },
+                        "permissions" : {
+                           "check" : [
+                              "perm",
+                              "/sdn/prefix-lists",
+                              [
+                                 "SDN.Allocate"
+                              ]
+                           ]
+                        },
+                        "protected" : 1,
+                        "returns" : {
+                           "type" : "null"
+                        }
+                     }
+                  },
+                  "leaf" : 0,
+                  "path" : "/cluster/sdn/prefix-lists",
+                  "text" : "prefix-lists"
+               },
+               {
+                  "children" : [
+                     {
+                        "children" : [
+                           {
+                              "children" : [
+                                 {
+                                    "children" : [
+                                       {
+                                          "info" : {
+                                             "DELETE" : {
+                                                "allowtoken" : 1,
+                                                "description" : "Delete Route Map Entry",
+                                                "method" : "DELETE",
+                                                "name" : "delete_route_map_entry",
+                                                "parameters" : {
+                                                   "properties" : {
+                                                      "lock-token" : {
+                                                         "description" : "the token for unlocking the global SDN configuration",
+                                                         "optional" : 1,
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      },
+                                                      "order" : {
+                                                         "description" : "The index of this route map entry",
+                                                         "maximum" : 65535,
+                                                         "minimum" : 0,
+                                                         "type" : "integer",
+                                                         "typetext" : "<integer> (0 - 65535)"
+                                                      },
+                                                      "route-map-id" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      }
+                                                   }
+                                                },
+                                                "permissions" : {
+                                                   "check" : [
+                                                      "perm",
+                                                      "/sdn/route-maps/{route-map-id}",
+                                                      [
+                                                         "SDN.Allocate"
+                                                      ]
+                                                   ]
+                                                },
+                                                "protected" : 1,
+                                                "returns" : {
+                                                   "type" : "null"
+                                                }
+                                             },
+                                             "GET" : {
+                                                "allowtoken" : 1,
+                                                "description" : "Get Route Map Entry",
+                                                "method" : "GET",
+                                                "name" : "get_route_map_entry",
+                                                "parameters" : {
+                                                   "properties" : {
+                                                      "order" : {
+                                                         "description" : "The index of this route map entry",
+                                                         "maximum" : 65535,
+                                                         "minimum" : 0,
+                                                         "type" : "integer",
+                                                         "typetext" : "<integer> (0 - 65535)"
+                                                      },
+                                                      "route-map-id" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      }
+                                                   }
+                                                },
+                                                "permissions" : {
+                                                   "check" : [
+                                                      "perm",
+                                                      "/sdn/route-maps/{route-map-id}",
+                                                      [
+                                                         "SDN.Audit",
+                                                         "SDN.Allocate"
+                                                      ],
+                                                      "any",
+                                                      1
+                                                   ]
+                                                },
+                                                "returns" : {
+                                                   "properties" : {
+                                                      "action" : {
+                                                         "description" : "Matching policy of a route map entry.",
+                                                         "enum" : [
+                                                            "permit",
+                                                            "deny"
+                                                         ],
+                                                         "optional" : 0,
+                                                         "type" : "string"
+                                                      },
+                                                      "call" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "digest" : {
+                                                         "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                                         "maxLength" : 64,
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "exit-action" : {
+                                                         "format" : {
+                                                            "key" : {
+                                                               "enum" : [
+                                                                  "on-match-goto",
+                                                                  "on-match-next",
+                                                                  "continue"
+                                                               ],
+                                                               "type" : "string"
+                                                            },
+                                                            "value" : {
+                                                               "description" : "The index of this route map entry",
+                                                               "maximum" : 65535,
+                                                               "minimum" : 0,
+                                                               "optional" : 1,
+                                                               "type" : "integer"
+                                                            }
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "match" : {
+                                                         "items" : {
+                                                            "format" : {
+                                                               "key" : {
+                                                                  "enum" : [
+                                                                     "route-type",
+                                                                     "vni",
+                                                                     "ip-address-prefix-list",
+                                                                     "ip6-address-prefix-list",
+                                                                     "ip-next-hop-prefix-list",
+                                                                     "ip6-next-hop-prefix-list",
+                                                                     "ip-next-hop-address",
+                                                                     "ip6-next-hop-address",
+                                                                     "metric",
+                                                                     "local-preference",
+                                                                     "peer"
+                                                                  ],
+                                                                  "type" : "string"
+                                                               },
+                                                               "value" : {
+                                                                  "description" : "Value that the field <key> should be matched on.",
+                                                                  "format_description" : "<key-dependent>",
+                                                                  "optional" : 1,
+                                                                  "type" : "string"
+                                                               }
+                                                            },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      },
+                                                      "order" : {
+                                                         "description" : "The index of this route map entry",
+                                                         "maximum" : 65535,
+                                                         "minimum" : 0,
+                                                         "type" : "integer"
+                                                      },
+                                                      "route-map-id" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "type" : "string"
+                                                      },
+                                                      "set" : {
+                                                         "items" : {
+                                                            "format" : {
+                                                               "key" : {
+                                                                  "enum" : [
+                                                                     "ip-next-hop-peer-address",
+                                                                     "ip-next-hop",
+                                                                     "ip-next-hop-unchanged",
+                                                                     "ip6-next-hop-peer-address",
+                                                                     "ip6-next-hop-prefer-global",
+                                                                     "ip6-next-hop",
+                                                                     "local-preference",
+                                                                     "tag",
+                                                                     "weight",
+                                                                     "metric",
+                                                                     "src"
+                                                                  ],
+                                                                  "type" : "string"
+                                                               },
+                                                               "value" : {
+                                                                  "description" : "Value that the field <key> should be set to.",
+                                                                  "format_description" : "<key-dependent>",
+                                                                  "optional" : 1,
+                                                                  "type" : "string"
+                                                               }
+                                                            },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array"
+                                                      }
+                                                   },
+                                                   "type" : "object"
+                                                }
+                                             },
+                                             "PUT" : {
+                                                "allowtoken" : 1,
+                                                "description" : "Update Route Map Entry",
+                                                "method" : "PUT",
+                                                "name" : "update_route_map_entry",
+                                                "parameters" : {
+                                                   "properties" : {
+                                                      "action" : {
+                                                         "description" : "Matching policy of a route map entry.",
+                                                         "enum" : [
+                                                            "permit",
+                                                            "deny"
+                                                         ],
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      },
+                                                      "call" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "optional" : 1,
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      },
+                                                      "delete" : {
+                                                         "items" : {
+                                                            "enum" : [
+                                                               "set",
+                                                               "match",
+                                                               "call",
+                                                               "exit-action"
+                                                            ],
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array",
+                                                         "typetext" : "<array>"
+                                                      },
+                                                      "digest" : {
+                                                         "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                                         "maxLength" : 64,
+                                                         "optional" : 1,
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      },
+                                                      "exit-action" : {
+                                                         "format" : {
+                                                            "key" : {
+                                                               "enum" : [
+                                                                  "on-match-goto",
+                                                                  "on-match-next",
+                                                                  "continue"
+                                                               ],
+                                                               "type" : "string"
+                                                            },
+                                                            "value" : {
+                                                               "description" : "The index of this route map entry",
+                                                               "maximum" : 65535,
+                                                               "minimum" : 0,
+                                                               "optional" : 1,
+                                                               "type" : "integer"
+                                                            }
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "string",
+                                                         "typetext" : "key=<on-match-goto|on-match-next|continue> [,value=<integer>]"
+                                                      },
+                                                      "lock-token" : {
+                                                         "description" : "the token for unlocking the global SDN configuration",
+                                                         "optional" : 1,
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      },
+                                                      "match" : {
+                                                         "items" : {
+                                                            "format" : {
+                                                               "key" : {
+                                                                  "enum" : [
+                                                                     "route-type",
+                                                                     "vni",
+                                                                     "ip-address-prefix-list",
+                                                                     "ip6-address-prefix-list",
+                                                                     "ip-next-hop-prefix-list",
+                                                                     "ip6-next-hop-prefix-list",
+                                                                     "ip-next-hop-address",
+                                                                     "ip6-next-hop-address",
+                                                                     "metric",
+                                                                     "local-preference",
+                                                                     "peer"
+                                                                  ],
+                                                                  "type" : "string"
+                                                               },
+                                                               "value" : {
+                                                                  "description" : "Value that the field <key> should be matched on.",
+                                                                  "format_description" : "<key-dependent>",
+                                                                  "optional" : 1,
+                                                                  "type" : "string"
+                                                               }
+                                                            },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array",
+                                                         "typetext" : "<array>"
+                                                      },
+                                                      "order" : {
+                                                         "description" : "The index of this route map entry",
+                                                         "maximum" : 65535,
+                                                         "minimum" : 0,
+                                                         "type" : "integer",
+                                                         "typetext" : "<integer> (0 - 65535)"
+                                                      },
+                                                      "route-map-id" : {
+                                                         "description" : "The SDN route map identifier",
+                                                         "format" : "pve-sdn-route-map-id",
+                                                         "type" : "string",
+                                                         "typetext" : "<string>"
+                                                      },
+                                                      "set" : {
+                                                         "items" : {
+                                                            "format" : {
+                                                               "key" : {
+                                                                  "enum" : [
+                                                                     "ip-next-hop-peer-address",
+                                                                     "ip-next-hop",
+                                                                     "ip-next-hop-unchanged",
+                                                                     "ip6-next-hop-peer-address",
+                                                                     "ip6-next-hop-prefer-global",
+                                                                     "ip6-next-hop",
+                                                                     "local-preference",
+                                                                     "tag",
+                                                                     "weight",
+                                                                     "metric",
+                                                                     "src"
+                                                                  ],
+                                                                  "type" : "string"
+                                                               },
+                                                               "value" : {
+                                                                  "description" : "Value that the field <key> should be set to.",
+                                                                  "format_description" : "<key-dependent>",
+                                                                  "optional" : 1,
+                                                                  "type" : "string"
+                                                               }
+                                                            },
+                                                            "type" : "string"
+                                                         },
+                                                         "optional" : 1,
+                                                         "type" : "array",
+                                                         "typetext" : "<array>"
+                                                      }
+                                                   }
+                                                },
+                                                "permissions" : {
+                                                   "check" : [
+                                                      "perm",
+                                                      "/sdn/route-maps/{route-map-id}",
+                                                      [
+                                                         "SDN.Allocate"
+                                                      ]
+                                                   ]
+                                                },
+                                                "protected" : 1,
+                                                "returns" : {
+                                                   "type" : "null"
+                                                }
+                                             }
+                                          },
+                                          "leaf" : 1,
+                                          "path" : "/cluster/sdn/route-maps/entries/{route-map-id}/entry/{order}",
+                                          "text" : "{order}"
+                                       }
+                                    ],
+                                    "leaf" : 0,
+                                    "path" : "/cluster/sdn/route-maps/entries/{route-map-id}/entry",
+                                    "text" : "entry"
+                                 }
+                              ],
+                              "info" : {
+                                 "GET" : {
+                                    "allowtoken" : 1,
+                                    "description" : "List all entries for a given Route Map",
+                                    "method" : "GET",
+                                    "name" : "list_route_map_entries_for_route_map",
+                                    "parameters" : {
+                                       "properties" : {
+                                          "pending" : {
+                                             "description" : "Display pending config.",
+                                             "optional" : 1,
+                                             "type" : "boolean",
+                                             "typetext" : "<boolean>"
+                                          },
+                                          "route-map-id" : {
+                                             "description" : "The SDN route map identifier",
+                                             "format" : "pve-sdn-route-map-id",
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          },
+                                          "running" : {
+                                             "description" : "Display running config.",
+                                             "optional" : 1,
+                                             "type" : "boolean",
+                                             "typetext" : "<boolean>"
+                                          }
+                                       }
+                                    },
+                                    "permissions" : {
+                                       "check" : [
+                                          "perm",
+                                          "/sdn/route-maps/{route-map-id}",
+                                          [
+                                             "SDN.Audit",
+                                             "SDN.Allocate"
+                                          ],
+                                          "any",
+                                          1
+                                       ]
+                                    },
+                                    "returns" : {
+                                       "items" : {
+                                          "properties" : {
+                                             "action" : {
+                                                "description" : "Matching policy of a route map entry.",
+                                                "enum" : [
+                                                   "permit",
+                                                   "deny"
+                                                ],
+                                                "optional" : 0,
+                                                "type" : "string"
+                                             },
+                                             "call" : {
+                                                "description" : "The SDN route map identifier",
+                                                "format" : "pve-sdn-route-map-id",
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             },
+                                             "digest" : {
+                                                "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                                "maxLength" : 64,
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             },
+                                             "exit-action" : {
+                                                "format" : {
+                                                   "key" : {
+                                                      "enum" : [
+                                                         "on-match-goto",
+                                                         "on-match-next",
+                                                         "continue"
+                                                      ],
+                                                      "type" : "string"
+                                                   },
+                                                   "value" : {
+                                                      "description" : "The index of this route map entry",
+                                                      "maximum" : 65535,
+                                                      "minimum" : 0,
+                                                      "optional" : 1,
+                                                      "type" : "integer"
+                                                   }
+                                                },
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             },
+                                             "match" : {
+                                                "items" : {
+                                                   "format" : {
+                                                      "key" : {
+                                                         "enum" : [
+                                                            "route-type",
+                                                            "vni",
+                                                            "ip-address-prefix-list",
+                                                            "ip6-address-prefix-list",
+                                                            "ip-next-hop-prefix-list",
+                                                            "ip6-next-hop-prefix-list",
+                                                            "ip-next-hop-address",
+                                                            "ip6-next-hop-address",
+                                                            "metric",
+                                                            "local-preference",
+                                                            "peer"
+                                                         ],
+                                                         "type" : "string"
+                                                      },
+                                                      "value" : {
+                                                         "description" : "Value that the field <key> should be matched on.",
+                                                         "format_description" : "<key-dependent>",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      }
+                                                   },
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array"
+                                             },
+                                             "order" : {
+                                                "description" : "The index of this route map entry",
+                                                "maximum" : 65535,
+                                                "minimum" : 0,
+                                                "type" : "integer"
+                                             },
+                                             "route-map-id" : {
+                                                "description" : "The SDN route map identifier",
+                                                "format" : "pve-sdn-route-map-id",
+                                                "type" : "string"
+                                             },
+                                             "set" : {
+                                                "items" : {
+                                                   "format" : {
+                                                      "key" : {
+                                                         "enum" : [
+                                                            "ip-next-hop-peer-address",
+                                                            "ip-next-hop",
+                                                            "ip-next-hop-unchanged",
+                                                            "ip6-next-hop-peer-address",
+                                                            "ip6-next-hop-prefer-global",
+                                                            "ip6-next-hop",
+                                                            "local-preference",
+                                                            "tag",
+                                                            "weight",
+                                                            "metric",
+                                                            "src"
+                                                         ],
+                                                         "type" : "string"
+                                                      },
+                                                      "value" : {
+                                                         "description" : "Value that the field <key> should be set to.",
+                                                         "format_description" : "<key-dependent>",
+                                                         "optional" : 1,
+                                                         "type" : "string"
+                                                      }
+                                                   },
+                                                   "type" : "string"
+                                                },
+                                                "optional" : 1,
+                                                "type" : "array"
+                                             }
+                                          },
+                                          "type" : "object"
+                                       },
+                                       "links" : [
+                                          {
+                                             "href" : "entry/{order}",
+                                             "rel" : "child"
+                                          }
+                                       ],
+                                       "type" : "array"
+                                    }
+                                 }
+                              },
+                              "leaf" : 0,
+                              "path" : "/cluster/sdn/route-maps/entries/{route-map-id}",
+                              "text" : "{route-map-id}"
+                           }
+                        ],
+                        "info" : {
+                           "GET" : {
+                              "allowtoken" : 1,
+                              "description" : "Lists all route map entries.",
+                              "method" : "GET",
+                              "name" : "list_route_map_entries",
+                              "parameters" : {
+                                 "properties" : {
+                                    "pending" : {
+                                       "description" : "Display pending config.",
+                                       "optional" : 1,
+                                       "type" : "boolean",
+                                       "typetext" : "<boolean>"
+                                    },
+                                    "running" : {
+                                       "description" : "Display running config.",
+                                       "optional" : 1,
+                                       "type" : "boolean",
+                                       "typetext" : "<boolean>"
+                                    }
+                                 }
+                              },
+                              "permissions" : {
+                                 "description" : "Only returns route map entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions.",
+                                 "user" : "all"
+                              },
+                              "returns" : {
+                                 "items" : {
+                                    "properties" : {
+                                       "action" : {
+                                          "description" : "Matching policy of a route map entry.",
+                                          "enum" : [
+                                             "permit",
+                                             "deny"
+                                          ],
+                                          "optional" : 0,
+                                          "type" : "string"
+                                       },
+                                       "call" : {
+                                          "description" : "The SDN route map identifier",
+                                          "format" : "pve-sdn-route-map-id",
+                                          "optional" : 1,
+                                          "type" : "string"
+                                       },
+                                       "digest" : {
+                                          "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                          "maxLength" : 64,
+                                          "optional" : 1,
+                                          "type" : "string"
+                                       },
+                                       "exit-action" : {
+                                          "format" : {
+                                             "key" : {
+                                                "enum" : [
+                                                   "on-match-goto",
+                                                   "on-match-next",
+                                                   "continue"
+                                                ],
+                                                "type" : "string"
+                                             },
+                                             "value" : {
+                                                "description" : "The index of this route map entry",
+                                                "maximum" : 65535,
+                                                "minimum" : 0,
+                                                "optional" : 1,
+                                                "type" : "integer"
+                                             }
+                                          },
+                                          "optional" : 1,
+                                          "type" : "string"
+                                       },
+                                       "match" : {
+                                          "items" : {
+                                             "format" : {
+                                                "key" : {
+                                                   "enum" : [
+                                                      "route-type",
+                                                      "vni",
+                                                      "ip-address-prefix-list",
+                                                      "ip6-address-prefix-list",
+                                                      "ip-next-hop-prefix-list",
+                                                      "ip6-next-hop-prefix-list",
+                                                      "ip-next-hop-address",
+                                                      "ip6-next-hop-address",
+                                                      "metric",
+                                                      "local-preference",
+                                                      "peer"
+                                                   ],
+                                                   "type" : "string"
+                                                },
+                                                "value" : {
+                                                   "description" : "Value that the field <key> should be matched on.",
+                                                   "format_description" : "<key-dependent>",
+                                                   "optional" : 1,
+                                                   "type" : "string"
+                                                }
+                                             },
+                                             "type" : "string"
+                                          },
+                                          "optional" : 1,
+                                          "type" : "array"
+                                       },
+                                       "order" : {
+                                          "description" : "The index of this route map entry",
+                                          "maximum" : 65535,
+                                          "minimum" : 0,
+                                          "type" : "integer"
+                                       },
+                                       "route-map-id" : {
+                                          "description" : "The SDN route map identifier",
+                                          "format" : "pve-sdn-route-map-id",
+                                          "type" : "string"
+                                       },
+                                       "set" : {
+                                          "items" : {
+                                             "format" : {
+                                                "key" : {
+                                                   "enum" : [
+                                                      "ip-next-hop-peer-address",
+                                                      "ip-next-hop",
+                                                      "ip-next-hop-unchanged",
+                                                      "ip6-next-hop-peer-address",
+                                                      "ip6-next-hop-prefer-global",
+                                                      "ip6-next-hop",
+                                                      "local-preference",
+                                                      "tag",
+                                                      "weight",
+                                                      "metric",
+                                                      "src"
+                                                   ],
+                                                   "type" : "string"
+                                                },
+                                                "value" : {
+                                                   "description" : "Value that the field <key> should be set to.",
+                                                   "format_description" : "<key-dependent>",
+                                                   "optional" : 1,
+                                                   "type" : "string"
+                                                }
+                                             },
+                                             "type" : "string"
+                                          },
+                                          "optional" : 1,
+                                          "type" : "array"
+                                       }
+                                    },
+                                    "type" : "object"
+                                 },
+                                 "links" : [
+                                    {
+                                       "href" : "{route-map-id}",
+                                       "rel" : "child"
+                                    }
+                                 ],
+                                 "type" : "array"
+                              }
+                           },
+                           "POST" : {
+                              "allowtoken" : 1,
+                              "description" : "Create Route Map entry",
+                              "method" : "POST",
+                              "name" : "create_route_map_entry",
+                              "parameters" : {
+                                 "properties" : {
+                                    "action" : {
+                                       "description" : "Matching policy of a route map entry.",
+                                       "enum" : [
+                                          "permit",
+                                          "deny"
+                                       ],
+                                       "optional" : 0,
+                                       "type" : "string"
+                                    },
+                                    "call" : {
+                                       "description" : "The SDN route map identifier",
+                                       "format" : "pve-sdn-route-map-id",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "digest" : {
+                                       "description" : "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+                                       "maxLength" : 64,
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "exit-action" : {
+                                       "format" : {
+                                          "key" : {
+                                             "enum" : [
+                                                "on-match-goto",
+                                                "on-match-next",
+                                                "continue"
+                                             ],
+                                             "type" : "string"
+                                          },
+                                          "value" : {
+                                             "description" : "The index of this route map entry",
+                                             "maximum" : 65535,
+                                             "minimum" : 0,
+                                             "optional" : 1,
+                                             "type" : "integer"
+                                          }
+                                       },
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "key=<on-match-goto|on-match-next|continue> [,value=<integer>]"
+                                    },
+                                    "lock-token" : {
+                                       "description" : "the token for unlocking the global SDN configuration",
+                                       "optional" : 1,
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "match" : {
+                                       "items" : {
+                                          "format" : {
+                                             "key" : {
+                                                "enum" : [
+                                                   "route-type",
+                                                   "vni",
+                                                   "ip-address-prefix-list",
+                                                   "ip6-address-prefix-list",
+                                                   "ip-next-hop-prefix-list",
+                                                   "ip6-next-hop-prefix-list",
+                                                   "ip-next-hop-address",
+                                                   "ip6-next-hop-address",
+                                                   "metric",
+                                                   "local-preference",
+                                                   "peer"
+                                                ],
+                                                "type" : "string"
+                                             },
+                                             "value" : {
+                                                "description" : "Value that the field <key> should be matched on.",
+                                                "format_description" : "<key-dependent>",
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             }
+                                          },
+                                          "type" : "string"
+                                       },
+                                       "optional" : 1,
+                                       "type" : "array",
+                                       "typetext" : "<array>"
+                                    },
+                                    "order" : {
+                                       "description" : "The index of this route map entry",
+                                       "maximum" : 65535,
+                                       "minimum" : 0,
+                                       "type" : "integer",
+                                       "typetext" : "<integer> (0 - 65535)"
+                                    },
+                                    "route-map-id" : {
+                                       "description" : "The SDN route map identifier",
+                                       "format" : "pve-sdn-route-map-id",
+                                       "type" : "string",
+                                       "typetext" : "<string>"
+                                    },
+                                    "set" : {
+                                       "items" : {
+                                          "format" : {
+                                             "key" : {
+                                                "enum" : [
+                                                   "ip-next-hop-peer-address",
+                                                   "ip-next-hop",
+                                                   "ip-next-hop-unchanged",
+                                                   "ip6-next-hop-peer-address",
+                                                   "ip6-next-hop-prefer-global",
+                                                   "ip6-next-hop",
+                                                   "local-preference",
+                                                   "tag",
+                                                   "weight",
+                                                   "metric",
+                                                   "src"
+                                                ],
+                                                "type" : "string"
+                                             },
+                                             "value" : {
+                                                "description" : "Value that the field <key> should be set to.",
+                                                "format_description" : "<key-dependent>",
+                                                "optional" : 1,
+                                                "type" : "string"
+                                             }
+                                          },
+                                          "type" : "string"
+                                       },
+                                       "optional" : 1,
+                                       "type" : "array",
+                                       "typetext" : "<array>"
+                                    }
+                                 }
+                              },
+                              "permissions" : {
+                                 "check" : [
+                                    "perm",
+                                    "/sdn/route-maps",
+                                    [
+                                       "SDN.Allocate"
+                                    ]
+                                 ]
+                              },
+                              "protected" : 1,
+                              "returns" : {
+                                 "type" : "null"
+                              }
+                           }
+                        },
+                        "leaf" : 0,
+                        "path" : "/cluster/sdn/route-maps/entries",
+                        "text" : "entries"
+                     }
+                  ],
+                  "info" : {
+                     "GET" : {
+                        "allowtoken" : 1,
+                        "description" : "List Route Maps",
+                        "method" : "GET",
+                        "name" : "list_route_maps",
+                        "parameters" : {
+                           "properties" : {
+                              "running" : {
+                                 "description" : "Display running config.",
+                                 "optional" : 1,
+                                 "type" : "boolean",
+                                 "typetext" : "<boolean>"
+                              }
+                           }
+                        },
+                        "permissions" : {
+                           "description" : "Only returns route maps where you have 'SDN.Audit' or 'SDN.Allocate' permissions.",
+                           "user" : "all"
+                        },
+                        "returns" : {
+                           "items" : {
+                              "properties" : {
+                                 "id" : {
+                                    "description" : "The SDN route map identifier",
+                                    "format" : "pve-sdn-route-map-id",
+                                    "type" : "string"
+                                 }
+                              },
+                              "type" : "object"
+                           },
+                           "links" : [
+                              {
+                                 "href" : "entries/{id}",
+                                 "rel" : "child"
+                              }
+                           ],
+                           "type" : "array"
+                        }
+                     }
+                  },
+                  "leaf" : 0,
+                  "path" : "/cluster/sdn/route-maps",
+                  "text" : "route-maps"
                },
                {
                   "info" : {
@@ -19592,6 +21966,16 @@ const apiSchema = [
                            },
                            "hastate" : {
                               "description" : "HA service status (for HA managed VMs).",
+                              "optional" : 1,
+                              "type" : "string"
+                           },
+                           "host-arch" : {
+                              "default" : "x86_64",
+                              "description" : "The node's CPU architecture. (for type 'node').",
+                              "enum" : [
+                                 "x86_64",
+                                 "aarch64"
+                              ],
                               "optional" : 1,
                               "type" : "string"
                            },
@@ -20084,6 +22468,33 @@ const apiSchema = [
                            ],
                            "optional" : 1,
                            "type" : "string"
+                        },
+                        "location" : {
+                           "description" : "The location of the cluster.",
+                           "format" : {
+                              "latitude" : {
+                                 "description" : "The latitude of the nodes location in degrees.",
+                                 "maximum" : 90,
+                                 "minimum" : -90,
+                                 "type" : "number"
+                              },
+                              "longitude" : {
+                                 "description" : "The longitude of the nodes location in degrees.",
+                                 "maximum" : 180,
+                                 "minimum" : -180,
+                                 "type" : "number"
+                              },
+                              "name" : {
+                                 "description" : "The name of the location of this node",
+                                 "maxLength" : 128,
+                                 "optional" : 1,
+                                 "type" : "string",
+                                 "typetext" : "<name>"
+                              }
+                           },
+                           "optional" : 1,
+                           "type" : "string",
+                           "typetext" : "latitude=<number> ,longitude=<number> [,name=<name>]"
                         },
                         "mac_prefix" : {
                            "default" : "BC:24:11",
@@ -25256,7 +27667,7 @@ const apiSchema = [
                                              ],
                                              "optional" : 1,
                                              "type" : "string",
-                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 6.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
+                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 7.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
                                           },
                                           "parallel[n]" : {
                                              "description" : "Map host parallel devices (n is 0 to 2).",
@@ -25986,7 +28397,7 @@ const apiSchema = [
                                           "serial[n]" : {
                                              "description" : "Create a serial device inside the VM (n is 0 to 3)",
                                              "optional" : 1,
-                                             "pattern" : "(/dev/.+|socket)",
+                                             "pattern" : "(/dev/[^,]+|socket)",
                                              "type" : "string",
                                              "verbose_description" : "Create a serial device inside the VM (n is 0 to 3), and pass through a\nhost serial device (i.e. /dev/ttyS0), or create a unix socket on the\nhost side (use 'qm terminal' to open a terminal connection).\n\nNOTE: If you pass through a host serial device, it is no longer possible to migrate such machines -\nuse with special care.\n\nCAUTION: Experimental! User reported problems with this option.\n"
                                           },
@@ -27716,7 +30127,7 @@ const apiSchema = [
                                              ],
                                              "optional" : 1,
                                              "type" : "string",
-                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 6.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
+                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 7.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
                                           },
                                           "parallel[n]" : {
                                              "description" : "Map host parallel devices (n is 0 to 2).",
@@ -28410,7 +30821,7 @@ const apiSchema = [
                                           "serial[n]" : {
                                              "description" : "Create a serial device inside the VM (n is 0 to 3)",
                                              "optional" : 1,
-                                             "pattern" : "(/dev/.+|socket)",
+                                             "pattern" : "(/dev/[^,]+|socket)",
                                              "type" : "string",
                                              "verbose_description" : "Create a serial device inside the VM (n is 0 to 3), and pass through a\nhost serial device (i.e. /dev/ttyS0), or create a unix socket on the\nhost side (use 'qm terminal' to open a terminal connection).\n\nNOTE: If you pass through a host serial device, it is no longer possible to migrate such machines -\nuse with special care.\n\nCAUTION: Experimental! User reported problems with this option.\n"
                                           },
@@ -30182,7 +32593,7 @@ const apiSchema = [
                                              ],
                                              "optional" : 1,
                                              "type" : "string",
-                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 6.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
+                                             "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 7.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
                                           },
                                           "parallel[n]" : {
                                              "description" : "Map host parallel devices (n is 0 to 2).",
@@ -30876,7 +33287,7 @@ const apiSchema = [
                                           "serial[n]" : {
                                              "description" : "Create a serial device inside the VM (n is 0 to 3)",
                                              "optional" : 1,
-                                             "pattern" : "(/dev/.+|socket)",
+                                             "pattern" : "(/dev/[^,]+|socket)",
                                              "type" : "string",
                                              "verbose_description" : "Create a serial device inside the VM (n is 0 to 3), and pass through a\nhost serial device (i.e. /dev/ttyS0), or create a unix socket on the\nhost side (use 'qm terminal' to open a terminal connection).\n\nNOTE: If you pass through a host serial device, it is no longer possible to migrate such machines -\nuse with special care.\n\nCAUTION: Experimental! User reported problems with this option.\n"
                                           },
@@ -36689,7 +39100,7 @@ const apiSchema = [
                                  ],
                                  "optional" : 1,
                                  "type" : "string",
-                                 "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 6.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
+                                 "verbose_description" : "Specify guest operating system. This is used to enable special\noptimization/features for specific operating systems:\n\n[horizontal]\nother;; unspecified OS\nwxp;; Microsoft Windows XP\nw2k;; Microsoft Windows 2000\nw2k3;; Microsoft Windows 2003\nw2k8;; Microsoft Windows 2008\nwvista;; Microsoft Windows Vista\nwin7;; Microsoft Windows 7\nwin8;; Microsoft Windows 8/2012/2012r2\nwin10;; Microsoft Windows 10/2016/2019\nwin11;; Microsoft Windows 11/2022/2025\nl24;; Linux 2.4 Kernel\nl26;; Linux 2.6 - 7.X Kernel\nsolaris;; Solaris/OpenSolaris/OpenIndiania kernel\n"
                               },
                               "parallel[n]" : {
                                  "description" : "Map host parallel devices (n is 0 to 2).",
@@ -37383,7 +39794,7 @@ const apiSchema = [
                               "serial[n]" : {
                                  "description" : "Create a serial device inside the VM (n is 0 to 3)",
                                  "optional" : 1,
-                                 "pattern" : "(/dev/.+|socket)",
+                                 "pattern" : "(/dev/[^,]+|socket)",
                                  "type" : "string",
                                  "verbose_description" : "Create a serial device inside the VM (n is 0 to 3), and pass through a\nhost serial device (i.e. /dev/ttyS0), or create a unix socket on the\nhost side (use 'qm terminal' to open a terminal connection).\n\nNOTE: If you pass through a host serial device, it is no longer possible to migrate such machines -\nuse with special care.\n\nCAUTION: Experimental! User reported problems with this option.\n"
                               },
@@ -38352,6 +40763,14 @@ const apiSchema = [
                                                    "type" : "boolean",
                                                    "verbose_description" : "Whether to include the mount point in backups (only used for volume mount points)."
                                                 },
+                                                "idmap" : {
+                                                   "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                                   "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                                   "optional" : 1,
+                                                   "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                                   "type" : "string",
+                                                   "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
+                                                },
                                                 "keepattrs" : {
                                                    "default" : 0,
                                                    "description" : "Inherit ownership and permissions from the mount point directory.",
@@ -38563,6 +40982,14 @@ const apiSchema = [
                                                    "description" : "Explicitly enable or disable ACL support.",
                                                    "optional" : 1,
                                                    "type" : "boolean"
+                                                },
+                                                "idmap" : {
+                                                   "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                                   "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                                   "optional" : 1,
+                                                   "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                                   "type" : "string",
+                                                   "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
                                                 },
                                                 "mountoptions" : {
                                                    "description" : "Extra mount options for rootfs/mps.",
@@ -38931,6 +41358,14 @@ const apiSchema = [
                                                    "type" : "boolean",
                                                    "verbose_description" : "Whether to include the mount point in backups (only used for volume mount points)."
                                                 },
+                                                "idmap" : {
+                                                   "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                                   "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                                   "optional" : 1,
+                                                   "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                                   "type" : "string",
+                                                   "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
+                                                },
                                                 "keepattrs" : {
                                                    "default" : 0,
                                                    "description" : "Inherit ownership and permissions from the mount point directory.",
@@ -38992,7 +41427,7 @@ const apiSchema = [
                                              },
                                              "optional" : 1,
                                              "type" : "string",
-                                             "typetext" : "[volume=]<volume> ,mp=<Path> [,acl=<1|0>] [,backup=<1|0>] [,keepattrs=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
+                                             "typetext" : "[volume=]<volume> ,mp=<Path> [,acl=<1|0>] [,backup=<1|0>] [,idmap=<type:container:disk:range-size[;type:container:disk:range-size;...]>] [,keepattrs=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
                                           },
                                           "nameserver" : {
                                              "description" : "Sets DNS server IP address for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.",
@@ -39161,6 +41596,14 @@ const apiSchema = [
                                                    "optional" : 1,
                                                    "type" : "boolean"
                                                 },
+                                                "idmap" : {
+                                                   "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                                   "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                                   "optional" : 1,
+                                                   "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                                   "type" : "string",
+                                                   "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
+                                                },
                                                 "mountoptions" : {
                                                    "description" : "Extra mount options for rootfs/mps.",
                                                    "format_description" : "opt[;opt...]",
@@ -39208,7 +41651,7 @@ const apiSchema = [
                                              },
                                              "optional" : 1,
                                              "type" : "string",
-                                             "typetext" : "[volume=]<volume> [,acl=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
+                                             "typetext" : "[volume=]<volume> [,acl=<1|0>] [,idmap=<type:container:disk:range-size[;type:container:disk:range-size;...]>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
                                           },
                                           "searchdomain" : {
                                              "description" : "Sets DNS search domains for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.",
@@ -45558,6 +48001,14 @@ const apiSchema = [
                                        "type" : "boolean",
                                        "verbose_description" : "Whether to include the mount point in backups (only used for volume mount points)."
                                     },
+                                    "idmap" : {
+                                       "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                       "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                       "optional" : 1,
+                                       "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                       "type" : "string",
+                                       "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
+                                    },
                                     "keepattrs" : {
                                        "default" : 0,
                                        "description" : "Inherit ownership and permissions from the mount point directory.",
@@ -45619,7 +48070,7 @@ const apiSchema = [
                                  },
                                  "optional" : 1,
                                  "type" : "string",
-                                 "typetext" : "[volume=]<volume> ,mp=<Path> [,acl=<1|0>] [,backup=<1|0>] [,keepattrs=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
+                                 "typetext" : "[volume=]<volume> ,mp=<Path> [,acl=<1|0>] [,backup=<1|0>] [,idmap=<type:container:disk:range-size[;type:container:disk:range-size;...]>] [,keepattrs=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
                               },
                               "nameserver" : {
                                  "description" : "Sets DNS server IP address for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.",
@@ -45807,6 +48258,14 @@ const apiSchema = [
                                        "optional" : 1,
                                        "type" : "boolean"
                                     },
+                                    "idmap" : {
+                                       "description" : "Map specific container UIDs/GIDs to underlying disk UIDs/GIDs for this mount point",
+                                       "format_description" : "type:container:disk:range-size[;type:container:disk:range-size;...]",
+                                       "optional" : 1,
+                                       "pattern" : "(?^:^(?:passthrough|[ug]:[0-9]+:[0-9]+:[1-9][0-9]*(?:;[ug]:[0-9]+:[0-9]+:[1-9][0-9]*)*)$)",
+                                       "type" : "string",
+                                       "verbose_description" : "Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.\n`type` is `u` for UID or `g` for GID.\n`container` is the first ID as seen inside the container.\n`disk` is the first corresponding ID on the underlying filesystem.\n`range-size` is the number of consecutive IDs to map.\nUnmapped IDs fall back to the container's `lxc.idmap`.\nExample: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container."
+                                    },
                                     "mountoptions" : {
                                        "description" : "Extra mount options for rootfs/mps.",
                                        "format_description" : "opt[;opt...]",
@@ -45854,7 +48313,7 @@ const apiSchema = [
                                  },
                                  "optional" : 1,
                                  "type" : "string",
-                                 "typetext" : "[volume=]<volume> [,acl=<1|0>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
+                                 "typetext" : "[volume=]<volume> [,acl=<1|0>] [,idmap=<type:container:disk:range-size[;type:container:disk:range-size;...]>] [,mountoptions=<opt[;opt...]>] [,quota=<1|0>] [,replicate=<1|0>] [,ro=<1|0>] [,shared=<1|0>] [,size=<DiskSize>]"
                               },
                               "searchdomain" : {
                                  "description" : "Sets DNS search domains for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.",
@@ -54064,6 +56523,80 @@ const apiSchema = [
                               "leaf" : 1,
                               "path" : "/nodes/{node}/storage/{storage}/import-metadata",
                               "text" : "import-metadata"
+                           },
+                           {
+                              "info" : {
+                                 "GET" : {
+                                    "allowtoken" : 1,
+                                    "description" : "Return identity information for this storage instance.",
+                                    "method" : "GET",
+                                    "name" : "identity",
+                                    "parameters" : {
+                                       "additionalProperties" : 0,
+                                       "properties" : {
+                                          "node" : {
+                                             "description" : "The cluster node name.",
+                                             "format" : "pve-node",
+                                             "type" : "string",
+                                             "typetext" : "<string>"
+                                          },
+                                          "storage" : {
+                                             "description" : "The storage identifier.",
+                                             "format" : "pve-storage-id",
+                                             "format_description" : "storage ID",
+                                             "type" : "string",
+                                             "typetext" : "<storage ID>"
+                                          }
+                                       }
+                                    },
+                                    "permissions" : {
+                                       "check" : [
+                                          "perm",
+                                          "/storage/{storage}",
+                                          [
+                                             "Datastore.Audit",
+                                             "Datastore.AllocateSpace"
+                                          ],
+                                          "any",
+                                          1
+                                       ]
+                                    },
+                                    "protected" : 1,
+                                    "proxyto" : "node",
+                                    "returns" : {
+                                       "properties" : {
+                                          "id" : {
+                                             "description" : "Unique identifier for this storage instance. The exact format and semantics depend on the storage plugin type.",
+                                             "type" : "string"
+                                          },
+                                          "type" : {
+                                             "description" : "The type of the storage.",
+                                             "enum" : [
+                                                "btrfs",
+                                                "cephfs",
+                                                "cifs",
+                                                "dir",
+                                                "esxi",
+                                                "iscsi",
+                                                "iscsidirect",
+                                                "lvm",
+                                                "lvmthin",
+                                                "nfs",
+                                                "pbs",
+                                                "rbd",
+                                                "zfs",
+                                                "zfspool"
+                                             ],
+                                             "type" : "string"
+                                          }
+                                       },
+                                       "type" : "object"
+                                    }
+                                 }
+                              },
+                              "leaf" : 1,
+                              "path" : "/nodes/{node}/storage/{storage}/identity",
+                              "text" : "identity"
                            }
                         ],
                         "info" : {
@@ -58424,8 +60957,10 @@ const apiSchema = [
                                                 "fabric" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "node" : {
                                                    "description" : "The cluster node name.",
@@ -58485,8 +61020,10 @@ const apiSchema = [
                                                 "fabric" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "node" : {
                                                    "description" : "The cluster node name.",
@@ -58546,8 +61083,10 @@ const apiSchema = [
                                                 "fabric" : {
                                                    "description" : "Identifier for SDN fabrics",
                                                    "format" : "pve-sdn-fabric-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 },
                                                 "node" : {
                                                    "description" : "The cluster node name.",
@@ -58607,8 +61146,10 @@ const apiSchema = [
                                           "fabric" : {
                                              "description" : "Identifier for SDN fabrics",
                                              "format" : "pve-sdn-fabric-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]",
+                                             "type" : "string"
                                           },
                                           "node" : {
                                              "description" : "The cluster node name.",
@@ -58677,9 +61218,10 @@ const apiSchema = [
                                                 },
                                                 "zone" : {
                                                    "description" : "The SDN zone object identifier.",
-                                                   "format" : "pve-sdn-zone-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -58911,9 +61453,10 @@ const apiSchema = [
                                           },
                                           "zone" : {
                                              "description" : "The SDN zone object identifier.",
-                                             "format" : "pve-sdn-zone-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -58987,7 +61530,9 @@ const apiSchema = [
                                        },
                                        "zone" : {
                                           "description" : "The SDN zone object identifier.",
-                                          "format" : "pve-sdn-zone-id",
+                                          "maxLength" : 8,
+                                          "minLength" : 2,
+                                          "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
                                           "type" : "string"
                                        }
                                     },
@@ -59029,9 +61574,10 @@ const apiSchema = [
                                                 },
                                                 "vnet" : {
                                                    "description" : "The SDN vnet object identifier.",
-                                                   "format" : "pve-sdn-vnet-id",
-                                                   "type" : "string",
-                                                   "typetext" : "<string>"
+                                                   "maxLength" : 8,
+                                                   "minLength" : 2,
+                                                   "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                                   "type" : "string"
                                                 }
                                              }
                                           },
@@ -59089,9 +61635,10 @@ const apiSchema = [
                                           },
                                           "vnet" : {
                                              "description" : "The SDN vnet object identifier.",
-                                             "format" : "pve-sdn-vnet-id",
-                                             "type" : "string",
-                                             "typetext" : "<string>"
+                                             "maxLength" : 8,
+                                             "minLength" : 2,
+                                             "pattern" : "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+                                             "type" : "string"
                                           }
                                        }
                                     },
@@ -62500,7 +65047,7 @@ const apiSchema = [
                                  },
                                  "PUT" : {
                                     "allowtoken" : 1,
-                                    "description" : "Update API token for a specific user.",
+                                    "description" : "Update API token for a specific user. NOTE: when 'regenerate' is set, the returned token value needs to be stored as it cannot be retrieved afterwards!",
                                     "method" : "PUT",
                                     "name" : "update_token_info",
                                     "parameters" : {
@@ -62529,6 +65076,13 @@ const apiSchema = [
                                           "privsep" : {
                                              "default" : 1,
                                              "description" : "Restrict API token privileges with separate ACLs (default), or give full privileges of corresponding user.",
+                                             "optional" : 1,
+                                             "type" : "boolean",
+                                             "typetext" : "<boolean>"
+                                          },
+                                          "regenerate" : {
+                                             "default" : 0,
+                                             "description" : "Regenerate the token's secret value. All users of the previous secret will lose access after this operation.",
                                              "optional" : 1,
                                              "type" : "boolean",
                                              "typetext" : "<boolean>"
@@ -62564,7 +65118,6 @@ const apiSchema = [
                                     },
                                     "protected" : 1,
                                     "returns" : {
-                                       "description" : "Updated token information.",
                                        "properties" : {
                                           "comment" : {
                                              "optional" : 1,
@@ -62577,11 +65130,22 @@ const apiSchema = [
                                              "optional" : 1,
                                              "type" : "integer"
                                           },
+                                          "full-tokenid" : {
+                                             "description" : "The full token id. Only set when 'regenerate' was set.",
+                                             "format_description" : "<userid>!<tokenid>",
+                                             "optional" : 1,
+                                             "type" : "string"
+                                          },
                                           "privsep" : {
                                              "default" : 1,
                                              "description" : "Restrict API token privileges with separate ACLs (default), or give full privileges of corresponding user.",
                                              "optional" : 1,
                                              "type" : "boolean"
+                                          },
+                                          "value" : {
+                                             "description" : "API token value used for authentication. Only set when 'regenerate' was set.",
+                                             "optional" : 1,
+                                             "type" : "string"
                                           }
                                        },
                                        "type" : "object"
