@@ -1,3 +1,78 @@
+pve-docs (9.1.4) trixie; urgency=medium
+
+  * pvecm: document both the default API-based join flow, which uses root@pam
+    and a SHA-256 certificate fingerprint, and the legacy SSH-based join that
+    is now opt-in via --use_ssh.
+
+  * pvecm: add an anchor for the "Remove a Cluster Node" section to allow
+    direct deep-linking.
+
+  * pveum: clarify that Privilege Separation is the default for new API
+    tokens, and document the 'expire' field for setting an automatic expiry.
+
+  * pveum: fix a dropped chapter anchor that broke docbook XML
+    cross-references in the deb build.
+
+  * pveproxy: note the BREACH trade-off for response compression, to explain
+    why hardening guides recommend disabling COMPRESSION.
+
+  * certificate-management: document how to distribute the cluster CA, which
+    admins must copy from /etc/pve/pve-root-ca.pem out of band as there is no
+    API or web interface endpoint for it.
+
+  * ha-manager: rework the HA resources section to introduce the HA resource
+    concept up front, drop the dated rgmanager comparison, and spell out the
+    implicit requirements that VMs and containers must fulfill, with a note on
+    how strict node affinity rules cover cases where the requirements only
+    hold on a subset of cluster nodes.
+
+  * ha-manager: document the new per-resource auto-rebalance property for
+    opting HA resources out of automatic load-balancer migrations.
+
+  * ha-manager: crs: rework the CRS chapter with a dedicated scheduling-modes
+    section, use the 'HA resource' term instead of 'service', and use
+    first-class headings for the scheduling points.
+
+  * ha-manager: crs: document the new dynamic-load scheduler mode and the
+    automatic rebalancing load-balancer system, both available with
+    pve-ha-manager 5.2.0 or newer.
+
+  * ha-manager: crs: note that the static-load and dynamic-load schedulers now
+    consider all running guests, not just HA-managed ones, when computing node
+    load. Available with pve-ha-manager 5.1.2 or newer.
+
+  * storage lvm: fix wrong column count in the storage features table that
+    caused the "Content types" cell to display the "Linked Clones" content.
+
+  * storage lvm: document that qcow2 is only available when the
+    snapshots-as-volume-chain option is enabled.
+
+  * storage zfs: describe ZFS encryption in the context of replication and
+    migration on Proxmox VE.
+
+  * sdn: add basic documentation for the new prefix list and route map
+    configuration entities, which filter and modify routes exchanged with BGP,
+    EVPN, OSPF, and OpenFabric peers. Focuses on where PVE diverges from a
+    plain FRR setup so that users familiar with FRR, Cisco IOS, or Juniper can
+    transfer their mental model.
+
+  * sdn: route maps: state the implicit deny default explicitly, and remove
+    the misleading note suggesting an empty deny entry was required.
+
+  * sdn: fabrics: add a section about WireGuard as a fabric protocol option,
+    covering per-interface keys, the listen port, peer configuration, and the
+    CIDR notation expected for interface IPs and allowed IPs.
+
+  * sdn: evpn: document the new zone and controller options, including
+    'bgp-mode', and the existing EVPN ASN generation behavior needed to
+    understand them.
+
+  * various small typo, grammar, and language fixes across the documentation.
+
+  * update static/schema information for API viewer and generated synopsis.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 15 May 2026 07:28:20 +0200
+
 pve-docs (9.1.3) trixie; urgency=medium
 
   * pvecm: restructure the "remove a cluster node" section into clear
