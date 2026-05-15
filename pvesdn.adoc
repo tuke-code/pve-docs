@@ -1120,6 +1120,109 @@ The trailing `permit` entry with no match is the FRR pattern for "allow
 everything else"; without it the implicit deny at the end of the route map
 would drop all unmatched routes.
 
+[[pvesdn_bgp]]
+BGP
+~~~
+
+BGP (Border Gateway Protocol) can be used as an eBGP unnumbered fabric. Each
+node has its own Autonomous System Number (ASN) and peers with its neighbors
+over physical interfaces without requiring IP addresses on the fabric links.
+
+Configuration options:
+
+[[pvesdn_bgp_fabric]]
+On the Fabric
+^^^^^^^^^^^^^
+
+IPv4 Prefix:: IPv4 CIDR network range (e.g., 192.0.2.0/24) used to verify that
+all node IPv4 addresses (BGP router-IDs) are contained within this prefix.
+
+IPv6 Prefix:: IPv6 CIDR network range (e.g., 2001:db8::/64) used to verify that
+all node IPv6 addresses in the fabric are contained within this prefix.
+
+BFD:: Enable Bidirectional Forwarding Detection on all peering sessions in this
+fabric. BFD provides fast failure detection for links between nodes.
+
+Route Filter:: A prefix list applied to the fabric peer-group's inbound
+direction. When set, this prefix list replaces the implicit "must be within the
+fabric prefix" filter. Useful to widen the accepted range (e.g. accept
+additional non-fabric prefixes redistributed via the fabric) or to use a more
+expressive match. References a prefix list defined under SDN.
+
+Incoming Route Map:: A route map chained from the fabric peer-group's implicit
+inbound filter via FRR's `call` action. Only prefixes that have already passed
+the implicit prefix check (or the Route Filter override) reach this route map.
+Useful to transform or further narrow accepted routes (e.g. adjust community or
+local-preference), but cannot widen the accepted set. Use Route Filter to
+override the implicit filter. References a route map defined under SDN.
+
+Outgoing Route Map:: A route map applied to the fabric peer-group's outbound
+direction. Used to transform or filter what is announced to fabric neighbors.
+References a route map defined under SDN.
+
+Redistribute:: Which other-protocol routes the BGP router on each node should
+redistribute into the fabric. Supported sources are `connected`, `kernel`,
+`static`, and `ospf`. An optional per-source route map can be attached to shape
+the redistributed routes before they are announced.
+
+NOTE: At least one of IPv4 Prefix or IPv6 Prefix must be configured.
+
+[[pvesdn_bgp_node]]
+On the Node
+^^^^^^^^^^^
+
+Options that are available on every node that is part of a fabric:
+
+Node:: Select the node which will be added to the fabric. Only nodes that are
+currently in the cluster will be shown.
+
+ASN:: BGP Autonomous System Number for this node. It is recommended to use
+private ASN numbers (64512-65534 for 16-bit, 4200000000-4294967294 for 32-bit).
+
+IPv4:: A unique IPv4 address for this node, also used as the BGP router-id.
+Required when the fabric has an IPv4 prefix configured; each node in the same
+fabric must have a different address.
+
+IPv6:: IPv6 address for this node. If only an IPv6 address is configured
+(without an IPv4 address), the BGP router-id is derived from it via a FNV-1a
+hash.
+
+Interfaces:: Specify the interfaces used to establish peering connections with
+other BGP nodes. These interfaces run BGP unnumbered (no IP address assignment
+needed). When a node IP is configured, a dummy "loopback" interface is
+automatically created with that IP.
+
+NOTE: Unlike OSPF and OpenFabric, BGP unnumbered interfaces do not need IP
+addresses. Peering is established using IPv6 link-local addresses
+automatically.
+
+NOTE: In an eBGP unnumbered fabric, directly peering nodes must have different
+ASNs for BGP sessions to establish.
+
+[[pvesdn_bgp_evpn]]
+Using BGP Fabrics with EVPN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When configuring an EVPN controller, a BGP fabric can be selected as the
+underlay instead of manually specifying peer addresses. The default
+configuration runs the EVPN overlay (VTEP) sessions as iBGP, using the EVPN
+controller's ASN for the router process. The per-node fabric ASN is
+automatically applied via `local-as` on the underlay neighbor group.
+
+This means the EVPN controller ASN and the per-node fabric ASNs should be
+different. For example, with three nodes using ASNs 65001, 65002, and 65003 for
+the underlay, the EVPN controller could use ASN 65000 for the overlay.
+
+Alternatively, setting BGP Mode to "external" on the EVPN controller runs the
+VTEP sessions as eBGP. The per-node fabric ASN is then used as the local ASN
+for the VTEP peer-group as well, so the VTEPs naturally peer with each other
+under different ASNs without needing a separate overlay ASN. The EVPN
+controller ASN is still used for auto-derived route-target values to keep
+them consistent across the fabric.
+
+NOTE: Using a BGP fabric for an EVPN underlay requires each node to have an
+IPv4 address, since EVPN uses it as the VTEP address.
+
 [[pvesdn_config_ipam]]
 IPAM
 ----
