@@ -441,6 +441,7 @@ list can contain numbers but also number ranges. For example, the *affinity*
 `0-1,8-11` (expanded `0, 1, 8, 9, 10, 11`) would allow the VM to run on only
 these six specific host cores.
 
+[[_cpu_type]]
 CPU Type
 ^^^^^^^^
 
