@@ -1575,16 +1575,17 @@ option. Finally, if the selected migration reduces the current cluster
 imbalance by at least the percentage given by the _imbalance improvement_
 option, the load balancer issues the selected migration.
 
-The cluster imbalance is calculated as the ratio between the standard deviation
-and mean of the individual node loads. Therefore, the _imbalance threshold_
-controls the sensitivity of the load balancer. If the _imbalance threshold_ is
-set to a value of `0.0`, it will try to select a rebalancing migration every
-time the _hold duration_ is exceeded. The _imbalance improvement_ percentage
-filters what constitutes an acceptable rebalancing migration. If it is set to
-`0.0`, then it will always commit to a migration even if the expected
-imbalance does not change at all. However, the value can never be negative, so
-it will never commit to a migration with an expected imbalance worse than the
-current one.
+The cluster imbalance is derived from the standard deviation and mean of the
+individual node loads and is normalized to a 0-100% range. Both the _imbalance
+threshold_ and the _imbalance improvement_ are configured in percent. The
+_imbalance threshold_ defaults to 30% and controls the sensitivity of the load
+balancer; with a value of `0` it will try to select a rebalancing migration
+every time the _hold duration_ is exceeded. The _imbalance improvement_
+defaults to 10% and filters what constitutes an acceptable rebalancing
+migration; with a value of `0` it will always commit to a migration even if
+the expected imbalance does not change at all. The value can never be
+negative, so the balancer will never commit to a migration with an expected
+imbalance worse than the current one.
 
 NOTE: It is planned that load balancing will also include non-HA resources in
 the future.
