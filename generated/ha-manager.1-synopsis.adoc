@@ -10,6 +10,10 @@ Create a new HA resource.
 
 HA resource ID. This consists of a resource type followed by a resource specific name, separated with colon (example: vm:100 / ct:100). For virtual machines and containers, you can simply use the VM or CT id as a shortcut (example: 100).
 
+`--auto-rebalance` `<boolean>` ('default =' `1`)::
+
+HA resource may be migrated during automatic rebalancing
+
 `--comment` `<string>` ::
 
 Description.
@@ -374,6 +378,10 @@ Update resource configuration.
 `<sid>`: `<type>:<name>` ::
 
 HA resource ID. This consists of a resource type followed by a resource specific name, separated with colon (example: vm:100 / ct:100). For virtual machines and containers, you can simply use the VM or CT id as a shortcut (example: 100).
+
+`--auto-rebalance` `<boolean>` ('default =' `1`)::
+
+HA resource may be migrated during automatic rebalancing
 
 `--comment` `<string>` ::
 

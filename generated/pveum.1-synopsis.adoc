@@ -234,6 +234,10 @@ Authentication domain ID
 
 Specifies the Authentication Context Class Reference values that theAuthorization Server is being requested to use for the Auth Request.
 
+`--audiences` `^[^\x00-\x1F\x7F <>#"]*$` ::
+
+A list of audiences that the OpenID Issuer may include that are accepted in addition to 'client-id'.
+
 `--autocreate` `<boolean>` ('default =' `0`)::
 
 Automatically create users if they do not exist.
@@ -420,6 +424,10 @@ Authentication domain ID
 `--acr-values` `^[^\x00-\x1F\x7F <>#"]*$` ::
 
 Specifies the Authentication Context Class Reference values that theAuthorization Server is being requested to use for the Auth Request.
+
+`--audiences` `^[^\x00-\x1F\x7F <>#"]*$` ::
+
+A list of audiences that the OpenID Issuer may include that are accepted in addition to 'client-id'.
 
 `--autocreate` `<boolean>` ('default =' `0`)::
 

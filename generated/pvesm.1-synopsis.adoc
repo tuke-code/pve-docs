@@ -22,9 +22,9 @@ Authsupported.
 
 Base volume. This volume is automatically activated.
 
-`--blocksize` `<string>` ::
+`--blocksize` `<a power of 2 with optional k or m suffix>` ::
 
-block size
+ZFS block size
 
 `--bwlimit` `[clone=<LIMIT>] [,default=<LIMIT>] [,migration=<LIMIT>] [,move=<LIMIT>] [,restore=<LIMIT>]` ::
 
@@ -596,9 +596,9 @@ Update storage configuration.
 
 The storage identifier.
 
-`--blocksize` `<string>` ::
+`--blocksize` `<a power of 2 with optional k or m suffix>` ::
 
-block size
+ZFS block size
 
 `--bwlimit` `[clone=<LIMIT>] [,default=<LIMIT>] [,migration=<LIMIT>] [,move=<LIMIT>] [,restore=<LIMIT>]` ::
 

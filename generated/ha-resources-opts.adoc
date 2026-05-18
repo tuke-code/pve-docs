@@ -1,3 +1,7 @@
+`auto-rebalance`: `<boolean>` ('default =' `1`)::
+
+HA resource may be migrated during automatic rebalancing
+
 `comment`: `<string>` ::
 
 Description.

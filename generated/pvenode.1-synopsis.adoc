@@ -215,7 +215,7 @@ Restart pveproxy.
 
 Get node configuration options.
 
-`--property` `<acme | acmedomain0 | acmedomain1 | acmedomain2 | acmedomain3 | acmedomain4 | acmedomain5 | ballooning-target | description | startall-onboot-delay | wakeonlan>` ('default =' `all`)::
+`--property` `<acme | acmedomain0 | acmedomain1 | acmedomain2 | acmedomain3 | acmedomain4 | acmedomain5 | ballooning-target | description | location | startall-onboot-delay | wakeonlan>` ('default =' `all`)::
 
 Return only a specific property from the node configuration.
 
@@ -247,6 +247,10 @@ Description for the Node. Shown in the web-interface node notes panel. This is s
 `--digest` `<string>` ::
 
 Prevent changes if current configuration file has different SHA1 digest. This can be used to prevent concurrent modifications.
+
+`--location` `latitude=<number> ,longitude=<number> [,name=<name>]` ::
+
+The location of the node. Overrides the default from the datacenter config.
 
 `--startall-onboot-delay` `<integer> (0 - 300)` ('default =' `0`)::
 

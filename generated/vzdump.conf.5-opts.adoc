@@ -42,10 +42,6 @@ Deprecated: use notification targets/matchers instead. Specify when to send a no
 
 Deprecated: Use notification targets/matchers instead. Comma-separated list of email addresses or users that should receive email notifications.
 
-`maxfiles`: `<integer> (1 - N)` ::
-
-Deprecated: use 'prune-backups' instead. Maximal number of backup files per guest system.
-
 `mode`: `<snapshot | stop | suspend>` ('default =' `snapshot`)::
 
 Backup mode.

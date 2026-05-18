@@ -52,9 +52,9 @@ The number of HA rounds for which the cluster node imbalance threshold must be e
 +
 NOTE: Requires option(s): `ha-auto-rebalance`
 
-`ha-auto-rebalance-margin`=`<number> (0 - N)` ('default =' `0.1`);;
+`ha-auto-rebalance-margin`=`<number> (0 - 100)` ('default =' `10`);;
 
-The minimum relative improvement in cluster node imbalance to commit to a resource balancing migration.
+The minimum relative improvement in cluster node imbalance, in percent, to commit to a resource balancing migration.
 +
 NOTE: Requires option(s): `ha-auto-rebalance`
 
@@ -64,9 +64,9 @@ The method to use for the scoring of balancing migrations.
 +
 NOTE: Requires option(s): `ha-auto-rebalance`
 
-`ha-auto-rebalance-threshold`=`<number> (0 - N)` ('default =' `0.3`);;
+`ha-auto-rebalance-threshold`=`<number> (0 - 100)` ('default =' `30`);;
 
-The threshold for the cluster node imbalance, which will trigger the automatic resource balancing system if its value is exceeded.
+The cluster node imbalance, in percent, which will trigger the automatic resource balancing system if exceeded.
 +
 NOTE: Requires option(s): `ha-auto-rebalance`
 
