@@ -1,3 +1,40 @@
+pve-docs (9.1.5) trixie; urgency=medium
+
+  * pveceph: document FastEC (allow_ec_optimizations) for erasure-coded pools,
+    introduced in Ceph Tentacle, including the one-way-switch caveat, mon-
+    enforced preconditions, and operational notes for enabling on populated
+    pools.
+
+  * ceph: warn that mixing CRUSH rules with and without device classes makes
+    the PG autoscaler skip the affected pools, so their pg_num is no longer
+    adjusted automatically.
+
+  * sdn: document the new BGP fabric configuration alongside the existing
+    OpenFabric and OSPF fabrics.
+
+  * sdn: update the example sysctl snippet to drop into /etc/sysctl.d/ instead
+    of /etc/sysctl.conf, which trixie no longer reads.
+
+  * local-zfs: rewrite the ARC limit section to reflect the new auto-sized
+    default (since OpenZFS 6a629f3), document the default explicitly, and
+    separate guidance for pre-existing setups into its own paragraph.
+
+  * local-zfs: reference the zfs(4) manual page for the full set of tunables.
+
+  * firewall: link the default-rules note to the implicit-rules section and
+    point users at the macro system for additional rules. Add a note in the
+    Ceph chapter that the firewall has to be configured when enabled.
+
+  * ha-manager: update CRS auto-rebalance prose for the new percent-based
+    threshold and minimum-improvement margin (was a 0.0-1.0 fraction in
+    pve-cluster < 9.1.5), state the new defaults (30% and 10%), and adjust
+    examples and the "ratio" phrasing accordingly.
+
+  * qm: add an anchor for the "CPU Type" section to allow deep-linking from
+    the UI to that subsection directly.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 18 May 2026 11:31:11 +0200
+
 pve-docs (9.1.4) trixie; urgency=medium
 
   * pvecm: document both the default API-based join flow, which uses root@pam
