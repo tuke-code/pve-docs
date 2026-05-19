@@ -661,6 +661,27 @@ and thus the guest should be told not to enable its mitigations, by exposing amd
 This is mutually exclusive with virt-ssbd and amd-ssbd.
 
 
+[[qm_cpu_windows_tweaks]]
+Windows-related CPU settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A couple of CPU defaults and properties are tuned specifically for Windows
+guests on recent Intel hardware:
+
+* `cet-ibt` and `cet-ss` (Control-flow Enforcement Technology: indirect
+  branch tracking and shadow stack) are disabled by default for Windows 11
+  machine types, as they currently break boot for Windows guests with
+  virtualization-based security enabled. Workloads that explicitly rely on
+  the flags can re-enable them per VM via the `Processor` flag editor.
+
+* The QEMU `level` CPU property is exposed so it can be set per VM (or in a
+  custom CPU model) without resorting to custom `args`. Setting `level=30`
+  is a known workaround for Hyper-V boot failures of Windows guests on
+  recent Intel hosts when the CPU type is `host` or `max`. The property
+  only applies for x86_64 vCPUs; it is silently ignored on other
+  architectures.
+
+
 NUMA
 ^^^^
 You can also optionally emulate a *NUMA*
