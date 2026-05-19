@@ -804,6 +804,14 @@ Area:: This specifies the OSPF area identifier, which can be either a 32-bit
 signed integer or an IP address. Areas are a way to organize and structure OSPF
 networks hierarchically, with Area 0 (or 0.0.0.0) serving as the backbone area.
 
+Redistribute:: Optional list of source protocols whose routes are imported
+into OSPF. Each entry picks a source (`bgp`, `connected`, `kernel` or
+`static`) and may additionally reference a
+xref:pvesdn_config_route_maps[route map] to filter or transform routes
+before they are advertised. Useful for example to leak BGP fabric routes
+into OSPF, or to advertise locally connected networks without configuring
+them per interface.
+
 [[pvesdn_ospf_node]]
 On the Node
 ^^^^^^^^^^^
