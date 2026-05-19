@@ -1406,15 +1406,14 @@ new cluster membership after a node failure.
 
 corosync uses the token coefficient to calculate
 several timeouts in relation to the cluster size
-footnote:[ `token_coefficient` in the corosync manual
-page
+footnote:[`token_coefficient` in the corosync manual page
 https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#token_coefficient],
 most importantly the token timeout and consensus timeout.
 corosync implements a token-passing protocol. The token timeout specifies how
 long a node waits for the token until it declares the token to be lost
-footnote:[ `token` in the corosync manual page
+footnote:[`token` in the corosync manual page
 https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#token]. The
-consensus timeout footnote:[ `consensus` in the corosync manual page
+consensus timeout footnote:[`consensus` in the corosync manual page
 https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#consensus]
 specifies the time nodes wait for a consensus on a new cluster membership. The
 sum of token and consensus timeouts defines the minimum time needed to
@@ -1425,8 +1424,10 @@ time needed for reestablishing a new cluster membership after a node failure.
 When HA is enabled, it is especially important that this time stays below 45
 seconds to ensure that a new cluster membership is formed before the
 xref:ha_manager_crm[watchdog timeout] of 60 seconds expires, which would
-trigger a node fence. The recommended mechanism for lowering the token and
-consensus timeouts is lowering the token coefficient as explained below.
+trigger a node fence. A safety margin below this 45 second limit is advisable
+so that transient timing variations do not push the cluster past the watchdog
+threshold. The recommended mechanism for lowering the token and consensus
+timeouts is lowering the token coefficient as explained below.
 
 You can check the current token and consensus timeouts (in milliseconds) with
 the following command:
@@ -1435,7 +1436,9 @@ the following command:
 ----
 corosync-cmapctl | grep -Ew 'runtime.config.totem.token|runtime.config.totem.consensus'
 ----
+
 For example:
+
 [source,bash]
 ----
 runtime.config.totem.consensus (u32) = 5940
@@ -1458,10 +1461,11 @@ especially with regards to latency. Then:
   corosync.conf, xref:pvecm_edit_corosync_conf[edit corosync.conf] and add
   `token_coefficient: 125` to the `totem` section. Do not forget to
   xref:pvecm_edit_corosync_conf[increase the `config_version`].
-* If the `token_coefficient` is already set explicitly to 125 milliseconds,
-  select a `token_coefficient` with which the token and consensus timeouts sum
-  up to at most 45 seconds. By default, corosync computes the token and
-  consensus timeouts (in milliseconds) according to the following formula:
+* Otherwise, if 125 milliseconds is not low enough to keep the timeouts within
+  the limits above, select a `token_coefficient` with which the token and
+  consensus timeouts sum up to at most 45 seconds. By default, corosync computes
+  the token and consensus timeouts (in milliseconds) according to the following
+  formula:
 +
 ----
 token = 3000 + (number_of_nodes - 2) * token_coefficient
