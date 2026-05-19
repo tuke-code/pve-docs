@@ -1393,22 +1393,90 @@ systemctl restart corosync
 
 On errors, check the troubleshooting section below.
 
+[[pvecm_changing_token_coefficient]]
 Changing the Token Coefficient
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The token coefficient can be configured in the `totem` section in
-`/etc/pve/corosync.conf`. corosync uses the token coefficient to calculate
-several timeouts in relation to the cluster size.footnote:[
-`token_coefficient` in the corosync manual page
-https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#token_coefficient]
+`/etc/pve/corosync.conf`. If the token coefficient is not explicitly set, it
+defaults to 650 milliseconds. Since Proxmox VE 9.2, new clusters are created
+with a lower token coefficient of 125 milliseconds explicitly set in
+`/etc/pve/corosync.conf`. This reduces the time needed for reestablishing a
+new cluster membership after a node failure.
 
-If the token coefficient is not explicitly set, it defaults to 650 milliseconds.
-New clusters are created with a lower token coefficient of 125 milliseconds that
-is explicitly set in `/etc/pve/corosync.conf`.
+corosync uses the token coefficient to calculate
+several timeouts in relation to the cluster size
+footnote:[ `token_coefficient` in the corosync manual
+page
+https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#token_coefficient],
+most importantly the token timeout and consensus timeout.
+corosync implements a token-passing protocol. The token timeout specifies how
+long a node waits for the token until it declares the token to be lost
+footnote:[ `token` in the corosync manual page
+https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#token]. The
+consensus timeout footnote:[ `consensus` in the corosync manual page
+https://manpages.debian.org/stable/corosync/corosync.conf.5.en.html#consensus]
+specifies the time nodes wait for a consensus on a new cluster membership. The
+sum of token and consensus timeouts defines the minimum time needed to
+reestablish a new cluster membership after a node goes offline.
 
-You can change the token coefficient of an existing cluster by
-xref:pvecm_edit_corosync_conf[editing corosync.conf]. Corosync will then
-automatically adopt the new value for the cluster.
+Keeping the sum of token and consensus timeouts below 30 seconds reduces the
+time needed for reestablishing a new cluster membership after a node failure.
+When HA is enabled, it is especially important that this time stays below 45
+seconds to ensure that a new cluster membership is formed before the
+xref:ha_manager_crm[watchdog timeout] of 60 seconds expires, which would
+trigger a node fence. The recommended mechanism for lowering the token and
+consensus timeouts is lowering the token coefficient as explained below.
+
+You can check the current token and consensus timeouts (in milliseconds) with
+the following command:
+
+[source,bash]
+----
+corosync-cmapctl | grep -Ew 'runtime.config.totem.token|runtime.config.totem.consensus'
+----
+For example:
+[source,bash]
+----
+runtime.config.totem.consensus (u32) = 5940
+runtime.config.totem.token (u32) = 4950
+----
+
+The sum of these two values (10.89 seconds in the example) defines the minimum
+time needed to reestablish a new cluster membership after a node goes offline.
+Lowering the token coefficient is
+
+* a suggested optimization if this value exceeds 30 seconds,
+* recommended if it exceeds 40 seconds,
+* strongly recommended if it exceeds 45 seconds.
+
+To lower the token coefficient, first make sure your setup adheres
+xref:pvecm_cluster_network_requirements[to the network requirements],
+especially with regards to latency. Then:
+
+* If the `token_coefficient` is not yet set explicitly to 125 milliseconds in
+  corosync.conf, xref:pvecm_edit_corosync_conf[edit corosync.conf] and add
+  `token_coefficient: 125` to the `totem` section. Do not forget to
+  xref:pvecm_edit_corosync_conf[increase the `config_version`].
+* If the `token_coefficient` is already set explicitly to 125 milliseconds,
+  select a `token_coefficient` with which the token and consensus timeouts sum
+  up to at most 45 seconds. By default, corosync computes the token and
+  consensus timeouts (in milliseconds) according to the following formula:
++
+----
+token = 3000 + (number_of_nodes - 2) * token_coefficient
+consensus = 1.2 * token
+----
++
+xref:pvecm_edit_corosync_conf[Edit corosync.conf] and set an appropriate
+`token_coefficient` option in the `totem` section. Do not forget to
+xref:pvecm_edit_corosync_conf[increase the `config_version`]. Test your setup
+thoroughly for stability!
+
+After adjusting the `token_coefficient` in `corosync.conf`, recent corosync
+versions will automatically adopt the new value for the cluster. For corosync
+versions below `3.1.10-pve1`, corosync needs to be restarted on all nodes for
+the change to take effect.
 
 Troubleshooting
 ~~~~~~~~~~~~~~~
