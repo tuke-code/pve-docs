@@ -1040,9 +1040,11 @@ Action:: Either `permit` or `deny`. `permit` lets the route pass (after any
 Match:: One or more match conditions. Available keys are: `route-type`, `vni`,
 `ip-address-prefix-list`, `ip6-address-prefix-list`, `ip-next-hop-prefix-list`,
 `ip6-next-hop-prefix-list`, `ip-next-hop-address`, `ip6-next-hop-address`,
-`metric`, `local-preference`, and `peer`. The four `*-prefix-list` keys
-reference a prefix list by name. All match conditions of an entry must be true
-for it to apply.
+`metric`, `local-preference`, `peer`, and `tag`. The four `*-prefix-list` keys
+reference a prefix list by name. `tag` matches a 32-bit route tag attribute,
+the same value that the `tag` set action assigns; this lets one entry mark
+routes with a tag and a later entry (in the same or another map) act on them.
+All match conditions of an entry must be true for it to apply.
 
 Set:: One or more attributes to set when the entry matches. Available keys are
 `ip-next-hop`, `ip-next-hop-peer-address`, `ip-next-hop-unchanged`,
