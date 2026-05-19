@@ -230,7 +230,7 @@ Subdir to mount.
 
 `--tagged_only` `<boolean>` ::
 
-Only use logical volumes tagged with 'pve-vm-ID'.
+Only list logical volumes tagged with 'pve-vm-ID'.
 
 `--target` `<string>` ::
 
@@ -788,7 +788,7 @@ Subdir to mount.
 
 `--tagged_only` `<boolean>` ::
 
-Only use logical volumes tagged with 'pve-vm-ID'.
+Only list logical volumes tagged with 'pve-vm-ID'.
 
 `--username` `<string>` ::
 

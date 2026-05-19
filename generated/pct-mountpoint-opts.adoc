@@ -17,12 +17,22 @@ Whether to include the mount point in backups (only used for volume mount points
 `idmap`=`<type:container:disk:range-size[;type:container:disk:range-size;...]>` ;;
 
 Customize UID/GID mappings that override the container's `lxc.idmap` for this mount point. Accepts a semicolon-separated list of `type:container:disk:range-size` entries.
++
 `type` is `u` for UID or `g` for GID.
++
 `container` is the first ID as seen inside the container.
++
 `disk` is the first corresponding ID on the underlying filesystem.
++
 `range-size` is the number of consecutive IDs to map.
++
 Unmapped IDs fall back to the container's `lxc.idmap`.
-Example: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container.
++
+Example 1: `u:123:456:1` maps UID 123 in the container to UID 456 on the disk. Files owned by UID 456 on the disk will appear as UID 123 inside the container.
++
+Example 2: `g:100:50:5` maps 5 consecutive GIDs, such that GIDs 100-104 in the container are mapped to GIDs 50-54 on the disk.
++
+Example 3: `passthrough` identity-maps all UIDs and GIDs, meaning IDs inside the container will match the IDs on the disk.
 
 `keepattrs`=`<boolean>` ('default =' `0`);;
 

@@ -61,19 +61,22 @@ Number of placement groups for the backing data pool. The metadata pool will use
 [[cli_pveceph_fs_destroy]]
 *pveceph fs destroy* `<name>` `[OPTIONS]`
 
-Destroy a Ceph filesystem
+Destroy a Ceph filesystem. Refuses if any PVE storage entry of type
+'cephfs' still references the filesystem and is not disabled. Optionally
+also removes the storage entries and/or the underlying metadata and data
+pools.
 
 `<name>`: `<string>` ::
 
-The ceph filesystem name.
+The Ceph filesystem name.
 
 `--remove-pools` `<boolean>` ('default =' `0`)::
 
-Remove data and metadata pools configured for this fs.
+Remove the metadata and data pools used by this filesystem.
 
 `--remove-storages` `<boolean>` ('default =' `0`)::
 
-Remove all pveceph-managed storages configured for this fs.
+Remove pveceph-managed storages configured for this filesystem.
 
 [[cli_pveceph_help]]
 *pveceph help* `[OPTIONS]`
@@ -91,11 +94,14 @@ Verbose output format.
 [[cli_pveceph_init]]
 *pveceph init* `[OPTIONS]`
 
-Create initial ceph default configuration and setup symlinks.
+Create the initial Ceph default configuration and set up symlinks.
+Idempotent on re-call: if a [global] section already exists in ceph.conf,
+the existing fsid / auth / pool defaults are preserved and most parameters
+are silently ignored.
 
 `--cluster-network` `<string>` ::
 
-Declare a separate cluster network, OSDs will routeheartbeat, object replication and recovery traffic over it
+Declare a separate cluster network, OSDs will route heartbeat, object replication and recovery traffic over it
 +
 NOTE: Requires option(s): `network`
 
@@ -172,9 +178,9 @@ The name (ID) of the mds
 
 Create Ceph Manager
 
-`--id` `[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?` ::
+`--id` `[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?` ('default =' `nodename`)::
 
-The ID for the manager, when omitted the same as the nodename
+The ID for the manager, when omitted the same as the nodename.
 
 [[cli_pveceph_mgr_destroy]]
 *pveceph mgr destroy* `<id>`
@@ -188,20 +194,22 @@ The ID of the manager
 [[cli_pveceph_mon_create]]
 *pveceph mon create* `[OPTIONS]`
 
-Create Ceph Monitor and Manager
+Create a Ceph Monitor. Also auto-creates a Manager for the first monitor.
 
 `--mon-address` `<string>` ::
 
 Overwrites autodetected monitor IP address(es). Must be in the public network(s) of Ceph.
 
-`--monid` `[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?` ::
+`--monid` `[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?` ('default =' `nodename`)::
 
-The ID for the monitor, when omitted the same as the nodename
+The ID for the monitor, when omitted the same as the nodename.
 
 [[cli_pveceph_mon_destroy]]
 *pveceph mon destroy* `<monid>`
 
-Destroy Ceph Monitor and Manager.
+Destroy a Ceph Monitor. Refuses to remove the last monitor of the cluster.
+Does not destroy any Manager on the same node; use
+/nodes/{node}/ceph/mgr/{id} for that.
 
 `<monid>`: `[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?` ::
 
@@ -224,7 +232,7 @@ Set the device class of the OSD in crush.
 
 Block device name for block.db.
 
-`--db_dev_size` `<number> (1 - N)` ('default =' `bluestore_block_db_size or 10% of OSD size`)::
+`--db_dev_size` `<number> (1 - N)` ::
 
 Size in GiB for block.db.
 +
@@ -236,14 +244,13 @@ Enables encryption of the OSD.
 
 `--osds-per-device` `<integer> (1 - N)` ::
 
-OSD services per physical device. Only useful for fast NVMe devices"
-		    ." to utilize their performance better.
+OSD services per physical device. Only useful for fast NVMe devices to utilize their performance better. Mutually exclusive with 'db_dev' and 'wal_dev'.
 
 `--wal_dev` `<string>` ::
 
 Block device name for block.wal.
 
-`--wal_dev_size` `<number> (0.5 - N)` ('default =' `bluestore_block_wal_size or 1% of OSD size`)::
+`--wal_dev_size` `<number> (0.5 - N)` ::
 
 Size in GiB for block.wal.
 +
@@ -260,7 +267,7 @@ OSD ID
 
 `--cleanup` `<boolean>` ('default =' `0`)::
 
-If set, we remove partition table entries.
+If set, also destroy the underlying logical volumes via 'ceph-volume lvm zap --destroy', remove the volume group's physical volume with pvremove, and wipe any journal/block.db/block.wal partitions left over from filestore OSDs. Without this flag the LVs and partitions are left intact for inspection.
 
 [[cli_pveceph_osd_details]]
 *pveceph osd details* `<osdid>` `[OPTIONS]` `[FORMAT_OPTIONS]`
@@ -284,9 +291,9 @@ Create Ceph pool
 
 The name of the pool. It must be unique.
 
-`--add_storages` `<boolean>` ('default =' `0; for erasure coded pools: 1`)::
+`--add_storages` `<boolean>` ('default =' `0`)::
 
-Configure VM and CT storage using the new pool.
+Configure VM and CT storage using the new pool. Defaults to false for replicated pools and to true for erasure-coded pools (since EC pools are typically only useful when wired up to storage).
 
 `--application` `<cephfs | rbd | rgw>` ('default =' `rbd`)::
 
