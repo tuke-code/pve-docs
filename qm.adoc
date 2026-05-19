@@ -527,13 +527,31 @@ Added CPU flags compared to 'x86-64-v3': '+avx512f', '+avx512bw', '+avx512cd',
 Custom CPU Types
 ^^^^^^^^^^^^^^^^
 
-You can specify custom CPU types with a configurable set of features. These are
-maintained in the configuration file `/etc/pve/virtual-guest/cpu-models.conf` by
-an administrator. See `man cpu-models.conf` for format details.
+You can define custom CPU types with a configurable set of base model, vendor,
+physical address bits, and per-flag toggles, then assign them to VMs like a
+built-in type. Custom types are referenced from a VM configuration as
+`custom-<name>`.
 
-Specified custom types can be selected by any user with the `Sys.Audit`
-privilege on `/nodes`. When configuring a custom CPU type for a VM via the CLI
-or API, the name needs to be prefixed with 'custom-'.
+Manage them under `Datacenter -> Custom CPU Models` in the web UI. The model
+dialog embeds a flag editor grid with free-text search over flag name and
+description, an accelerator (kvm/tcg) selector, and a per-node multi-select
+that highlights the flags each selected cluster node currently reports as
+supported - useful to spot which flags would actually be available on the
+target hosts before committing to a model. The same grid is reused in the
+per-VM `Processor` edit dialog, restricted there to the flags settable per
+VM; configured flags unknown to the API or unsupported on the selected
+accelerator surface at the top with a warning.
+
+Custom CPU types are still backed by the configuration file
+`/etc/pve/virtual-guest/cpu-models.conf` and can be maintained from the CLI
+as well, see `man cpu-models.conf` for the format.
+
+Access to a custom model is controlled per model via the ACL path
+`/mapping/cpu/<name>`. `Mapping.Audit` lets a user see the model in
+listings, `Mapping.Modify` gates create/update/delete in the panel, and
+`Mapping.Use` is required to assign the model to a VM. The latter is
+enforced on VM create, VM update, and VM clone, so a user who can clone a VM
+that uses a custom model still needs `Mapping.Use` on that model's ACL path.
 
 [[qm_meltdown_spectre]]
 Meltdown / Spectre related CPU flags
