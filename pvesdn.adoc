@@ -883,8 +883,11 @@ definitions that can be used across the whole cluster.
 .Internal
 
 Endpoint:: This is the IP or hostname that other Proxmox VE nodes should use for
-connecting to this Proxmox VE node. This is used as the endpoint when
-configuring this Proxmox VE node as a peer.
+connecting to this Proxmox VE node. This is used together with the endpoint port
+when configuring this Proxmox VE node as a peer.
+
+Endpoint Port:: This is the UDP port that other Proxmox VE nodes should use for
+connecting to this Proxmox VE node. If unset, it defaults to `51820`.
 
 Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
 or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
@@ -898,8 +901,11 @@ Name:: The name of the external node.
 
 Public Key:: The public key used by the external node.
 
-Endpoint:: The endpoint other nodes use to connect to this external peer, such
-as `192.0.2.1:51820`.
+Endpoint:: The IP or hostname that other nodes use to connect to this external
+peer.
+
+Endpoint Port:: The UDP port that other nodes use to connect to this external
+peer. If unset, it defaults to `51820`.
 
 Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
 or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
