@@ -1,3 +1,11 @@
+pve-docs (9.2.0) trixie; urgency=medium
+
+  * bump for Proxmox VE 9.2.
+
+  * update static/schema information for API viewer and generated synopsis.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 20 May 2026 04:57:30 +0200
+
 pve-docs (9.1.5) trixie; urgency=medium
 
   * pveceph: document FastEC (allow_ec_optimizations) for erasure-coded pools,
