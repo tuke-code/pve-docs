@@ -435,9 +435,9 @@ The following {pve} releases are very outdated and are archived:
 * {pve} 1, based on Debian 5 ``lenny''
 * {pve} 2, based on Debian 6 ``squeeze''
 * {pve} 3, based on Debian 7 ``wheezy''
-* {pve} 4, based on Debian 6 ``jessie''
-* {pve} 5, based on Debian 8 ``stretch''
-* {pve} 6, based on Debian 9 ``buster''
+* {pve} 4, based on Debian 8 ``jessie''
+* {pve} 5, based on Debian 9 ``stretch''
+* {pve} 6, based on Debian 10 ``buster''
 
 For {pve} 3 and newer from above list, repositories are still available on our
 archive CDN.
