@@ -200,7 +200,7 @@ disable the old Ceph repository.
 //      - below variables (used in below headings and example ceph.sources files)
 //      - the Ceph release table
 :pve-version: 9
-:ceph-release: ceph-squid
+:ceph-release: ceph-tentacle
 :suite: trixie
 
 [[ceph_release_table]]
@@ -218,10 +218,10 @@ that all system updates are installed and that this page has been reloaded.
 [caption="", cols="<8,^8,^6,^7,^5"]
 |===
 |                   | {eol}         |**`enterprise`**|**`no-subscription`**|**`test`**
-|**`ceph-squid`**   |2026-09 (v19.2)|{r}|{a}|{a}
+|**`ceph-tentacle`**|2027-11 (v20.2)|{r}|{a}|{a}
+|**`ceph-squid`**   |2026-09 (v19.2)|{a}|{a}|{a}
 |===
 
-//|**`ceph-tentacle`**|            {u}|{u}|{u}|{u}
 
 
 .Ceph repositories for {pve} {pve-version}
