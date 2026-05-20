@@ -1,3 +1,16 @@
+pve-docs (9.2.1) trixie; urgency=medium
+
+  * fix #7605: correct wrong Debian release numbers for outdated releases.
+
+  * sdn: update wireguard section to reflect that the  endpoint parameter was
+    split into the endpoint and endpoint port.
+
+  * package-repos: document that Ceph 20.2 Tentacle is the new default stable
+    release and point all links to the upstream ceph documentation to that
+    release.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 20 May 2026 15:46:31 +0200
+
 pve-docs (9.2.0) trixie; urgency=medium
 
   * bump for Proxmox VE 9.2.
