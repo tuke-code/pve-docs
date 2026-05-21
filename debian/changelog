@@ -1,3 +1,14 @@
+pve-docs (9.2.2) trixie; urgency=medium
+
+  * faq: make EOL description more explicit and fix Debian Bookworm EOL date,
+    it got moved a month back, Proxmox VE will keep the original one.
+
+  * sdn: fabrics: wireguard: update endpoint documentation.
+
+  * update static/schema information for API viewer and generated synopsis.
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 21 May 2026 22:27:14 +0200
+
 pve-docs (9.2.1) trixie; urgency=medium
 
   * fix #7605: correct wrong Debian release numbers for outdated releases.
