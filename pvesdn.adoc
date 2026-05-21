@@ -883,11 +883,12 @@ definitions that can be used across the whole cluster.
 .Internal
 
 Endpoint:: This is the IP or hostname that other Proxmox VE nodes should use for
-connecting to this Proxmox VE node. This is used together with the endpoint port
-when configuring this Proxmox VE node as a peer.
-
-Endpoint Port:: This is the UDP port that other Proxmox VE nodes should use for
-connecting to this Proxmox VE node. If unset, it defaults to `51820`.
+connecting to this Proxmox VE node (e.g. `192.0.2.1` / `2001:db8::1`). This is
+used together with the 'Listen Port' configured on the separate interfaces for
+constructing the actual endpoint. For instance, if a node has the IP `192.0.2.1`
+as an 'Endpoint' and an interface `wg0` with 'Listen Port' `51820` configured,
+then other nodes will use `192.0.2.1:51820` as endpoint for connecting to this
+node.
 
 Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
 or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
@@ -901,11 +902,10 @@ Name:: The name of the external node.
 
 Public Key:: The public key used by the external node.
 
-Endpoint:: The IP or hostname that other nodes use to connect to this external
-peer.
-
-Endpoint Port:: The UDP port that other nodes use to connect to this external
-peer. If unset, it defaults to `51820`.
+Endpoint:: The IP or hostname together with the port that other nodes use to
+connect to this external peer (e.g. `192.0.2.1:51820`). If an endpoint uses an
+IPv6 address, then the address needs to be enclosed in square brackets (e.g.
+`[2001:db8::1]:51820`).
 
 Allowed IPs:: A comma-separated list of CIDRs (for example `198.51.100.0/24`,
 or `0.0.0.0/0` to tunnel all IPv4 traffic). When selecting this node as a peer
