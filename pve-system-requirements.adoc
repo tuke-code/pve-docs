@@ -55,7 +55,7 @@ Recommended System Requirements
 * Redundant (Multi-)Gbit NICs, with additional NICs depending on the preferred
   storage technology and cluster setup.
 
-* For PCI(e) passthrough the CPU needs to support the VT-d/AMD-d flag.
+* For PCI(e) passthrough the CPU needs to support the Intel VT-d, AMD-Vi flag.
 
 
 Simple Performance Overview
