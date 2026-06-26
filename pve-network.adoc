@@ -392,6 +392,10 @@ iface vmbr0 inet static
         bridge-fd 0
 ----
 
+The `vmbr0` address `203.0.113.17` is the first usable host address of the
+`203.0.113.16/28` block; the block's network address `203.0.113.16` cannot be
+assigned to an interface.
+
 
 [[sysadmin_network_masquerading]]
 Masquerading (NAT) with `iptables`
