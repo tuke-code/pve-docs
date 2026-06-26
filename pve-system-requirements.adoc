@@ -55,7 +55,11 @@ Recommended System Requirements
 * Redundant (Multi-)Gbit NICs, with additional NICs depending on the preferred
   storage technology and cluster setup.
 
-* For PCI(e) passthrough the CPU needs to support the Intel VT-d, AMD-Vi flag.
+* For PCI(e) passthrough, the CPU and motherboard need to support IOMMU
+  (Intel VT-d, AMD-Vi).
+
+TIP: IOMMU usually also needs to be enabled in the BIOS/UEFI. See the
+xref:qm_pci_passthrough[PCI(e) Passthrough] chapter for details.
 
 
 Simple Performance Overview
