@@ -464,7 +464,7 @@ but you can also combine this with other RAID variants, as described in the
 xref:sysadmin_zfs_create_new_zpool_raid0[Create a new pool with RAID] section.
 
 You can also mirror the log device to multiple devices, this is mainly useful to
-ensure that performance doesn't immediately degrades if a single log device
+ensure that performance doesn't immediately degrade if a single log device
 fails.
 
 If all log devices fail the ZFS main pool itself will be used again, until the
