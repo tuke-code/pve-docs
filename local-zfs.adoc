@@ -504,6 +504,17 @@ You can also add ZIL and cache separately.
 # zpool add <pool> log <log-device>
 ----
 
+[[sysadmin_zfs_add_hot_spare]]
+Adding a hot spare drive to an existing pool
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ZFS supports hot spare drives which allow the system to automatically replace
+a failed disk with the spare without manual intervention.
+
+.Add a hot spare to an existing pool
+----
+# zpool add <pool> spare <spare-device>
+----
 
 [[sysadmin_zfs_change_failed_dev]]
 Changing a failed device
