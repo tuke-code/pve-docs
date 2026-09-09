@@ -1357,7 +1357,7 @@ Migration Steps
 
 The migration helper checks the cluster, rotates keys, and resumes interrupted
 work. Review each dry run before applying its plan; add `--verbose` for full
-node, keyring, and device inventories.
+node, keyring, and device inventories and inspection diagnostics.
 
 Reruns do not rotate completed keys again. After each run, invoke the helper
 without options to check the current state and follow the next steps it prints.
@@ -1471,9 +1471,10 @@ until confirmation makes the new key current and invalidates the old one.
   xref:pveceph_cephx_external_copies[managed key files], then restart or remount
   those clients.
 
-The helper reports sessions that may still hold an old key. Client names
-are hints, not a complete workload inventory; check disconnected clients
-and external key copies yourself.
+The helper reports sessions that may still hold an old key. Client hints
+are host-wide, not session attribution or a complete workload inventory.
+Sockets without an owning process are listed separately. Check disconnected
+clients and external key copies yourself.
 
 [[pveceph_cephx_finish]]
 3. Finish or Pause the Migration
@@ -1616,7 +1617,8 @@ Interrupted Runs and Manual Fallback
 
 After an interruption, run the helper without options to check what remains.
 Keep the journal unchanged and follow the printed next steps rather than
-starting a manual rotation.
+starting a manual rotation. If the helper reports unavailable daemons, check
+the affected nodes and service logs rather than assuming their keys need repair.
 
 If the helper still cannot proceed, install the latest `pve-manager` and retry.
 Contact Proxmox support before editing the journal or keyrings, or before using
