@@ -1363,7 +1363,7 @@ Reruns do not rotate completed keys again. After each run, invoke the helper
 without options to check the current state and follow the next steps it prints.
 
 .Before You Begin
-* Upgrade `pve-manager` to 9.2.17 or newer and install the latest Ceph
+* Upgrade `pve-manager` to 9.2.19 or newer and install the latest Ceph
   packages on every node. Staged client-key rotation requires Ceph
   19.2.6-pve3, 20.2.4-pve3, or newer on every monitor.
 * Then complete the rolling restart of all Ceph services.
@@ -1556,6 +1556,12 @@ retiring its old credential. If a client returns during the batch, completed
 rotations stay committed and the blocked key stays staged. To confirm ready
 users separately, use `--confirm-clients-refreshed <USER>` with `--apply`.
 
+Ceph 19.2.6-pve4 and 20.2.4-pve4 or newer monitors can identify each session's
+key, allowing refreshed clients to stay connected during forward or rollback
+confirmation. Upgrade and restart older monitors to use this feature. Without
+key identification, every visible client of that user must disconnect before
+confirmation; upgrading is preferable for a shared user such as `client.admin`.
+
 [[pveceph_cephx_external_copies]]
 Key Copies for External Clients
 +++++++++++++++++++++++++++++++
@@ -1590,12 +1596,6 @@ To return a staged user to its current key:
 . Run the helper with `--confirm-abort-clients-refreshed <USER> --apply` to
   retire the staged key. The helper refuses if monitor session collection is
   incomplete, a visible session uses the staged key, or its key is unknown.
-
-Ceph 19.2.6-pve4 and 20.2.4-pve4 or newer monitors can identify each session's
-key, allowing clients on the restored key to stay connected during rollback
-confirmation. Upgrade and restart older monitors to use this feature. Without
-key identification, every visible client of that user must disconnect before
-confirmation; upgrading is preferable for a shared user such as `client.admin`.
 
 Emergency Cipher Override
 +++++++++++++++++++++++++
