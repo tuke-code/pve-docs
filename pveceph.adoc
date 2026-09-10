@@ -1530,9 +1530,8 @@ cipher. |Run the cluster-owned migration. This check has error severity.
 cipher. A staged user stays listed until its rotation is confirmed.
 |Rotate the keys of compatible users and confirm them, or mute the warning.
 |`AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE` |A rotating service key uses the old
-cipher. |Continue the migration; this warning clears automatically within a few
-hours after migrating the cluster-owned keys and does not prevent final cipher
-restriction.
+cipher. |Continue the migration; old rotating keys expire automatically and do
+not prevent final cipher restriction.
 |`AUTH_INSECURE_KEYS_ALLOWED` |Monitors accept the old cipher. |Finish the
 migration, or mute the warning while old clients remain.
 |`AUTH_INSECURE_KEYS_CREATABLE` |Monitors can create old-cipher keys. |Finish
