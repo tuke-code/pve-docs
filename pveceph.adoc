@@ -1617,10 +1617,11 @@ before the final dry run.
 Interrupted Runs and Manual Fallback
 ++++++++++++++++++++++++++++++++++++
 
-After an interruption, run the helper without options to check what remains.
-Keep the journal unchanged and follow the printed next steps rather than
-starting a manual rotation. If the helper reports unavailable daemons, check
-the affected nodes and service logs rather than assuming their keys need repair.
+After an interruption, run the helper without options once the affected nodes
+are reachable. Unfinished key updates can resume while their daemons are
+stopped. Keep the journal unchanged and follow the printed next steps rather
+than starting a manual rotation. Check the affected nodes and service logs
+rather than assuming a down daemon's key needs repair.
 
 If the helper still cannot proceed, install the latest `pve-manager` and retry.
 Contact Proxmox support before editing the journal or keyrings, or before using
