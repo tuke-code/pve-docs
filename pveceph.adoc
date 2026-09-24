@@ -1577,6 +1577,13 @@ it securely and update every saved copy before refreshing the client.
 Storage backed by an external cluster is different: the helper never rotates
 that cluster's keys. Follow its administrator's key-rotation procedure.
 
+A storage with `monhost` set counts as external even if its monitors belong to
+the local cluster, so the helper does not update its key copy. If that copy
+holds the key of a Ceph user you migrate, update it with the staged key of the
+same user before confirming, or with the restored key before confirming a
+rollback. The helper refuses to retire a key it finds in a storage key copy;
+verify copies it cannot check yourself.
+
 The helper lists local users not managed by {pve} separately. Follow their
 client's supported rotation procedure, or leave their keys unchanged and keep
 the old cipher enabled.
@@ -1594,7 +1601,8 @@ To return a staged user to its current key:
   forward migration.
 . Run the helper with `--confirm-abort-clients-refreshed <USER> --apply` to
   retire the staged key. The helper refuses if monitor session collection is
-  incomplete, a visible session uses the staged key, or its key is unknown.
+  incomplete, a visible session uses the staged key, its key is unknown, or a
+  storage key copy still holds the staged key.
 
 Emergency Cipher Override
 +++++++++++++++++++++++++

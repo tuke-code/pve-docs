@@ -38,7 +38,9 @@ This backend supports the common storage properties `nodes`,
 monhost::
 
 List of monitor daemon IPs. Optional, only needed if Ceph is not running on the
-{pve} cluster.
+{pve} cluster. With `monhost` set, {pve} treats the cluster as external and
+keeps a separate key copy for this storage, even if the monitors belong to the
+Ceph cluster of this {pve} cluster.
 
 pool::
 
