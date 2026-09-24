@@ -1373,6 +1373,8 @@ without options to check the current state and follow the next steps it prints.
 * Run the helper as `root` on one node only. Do not start another migration,
   a rolling restart, or change Ceph keys with other tools while it runs. The
   helper's lock does not block direct Ceph authentication commands.
+* If Cephx is disabled on this cluster, follow
+  xref:pveceph_cephx_disabled[Clusters with Cephx Disabled] instead.
 
 1. Migrate the Cluster-Owned Keys
 +++++++++++++++++++++++++++++++++
@@ -1537,6 +1539,44 @@ migration, or mute the warning while old clients remain.
 |`AUTH_INSECURE_KEYS_CREATABLE` |Monitors can create old-cipher keys. |Finish
 the migration, or mute the warning while old clients remain.
 |===
+
+[[pveceph_cephx_disabled]]
+Clusters with Cephx Disabled
+++++++++++++++++++++++++++++
+
+Ceph evaluates these health checks from the stored keys and cipher settings,
+also when Cephx is disabled, that is, when `auth_cluster_required`,
+`auth_service_required`, and `auth_client_required` are set to `none`.
+Disabling Cephx therefore does not clear them, and changing the authentication
+method interrupts existing clients, which need a restart or remount afterwards.
+
+On a cluster with Cephx disabled:
+
+. Run the helper without options and apply its plan. It migrates the manager,
+  metadata server, and OSD keys, restarting services one at a time when needed,
+  and switches the service tickets to the new cipher. This clears both
+  error-severity checks. If an old `mon.` key is stored in the authentication
+  database, the helper instead refuses and asks you to migrate that key first.
+. Optionally, migrate the bootstrap and crash keys with `--rotate-client-keys`.
+. Mute the remaining warnings without a duration. While Cephx is disabled, the
+  helper does not migrate the keys of other Ceph users, as their clients do not
+  authenticate with Cephx:
++
+[source,bash]
+----
+ceph health mute AUTH_INSECURE_CLIENT_KEY_TYPE --sticky
+ceph health mute AUTH_INSECURE_KEYS_ALLOWED --sticky
+ceph health mute AUTH_INSECURE_KEYS_CREATABLE --sticky
+----
+
+Do not restrict the allowed ciphers or forbid creating old-cipher keys by hand
+while the preferred cipher is still `aes`, as creating keys then fails.
+
+Before you enable Cephx again, unmute these checks and make sure that every
+monitor, Ceph service, and client still has a key file matching the
+authentication database. Restart the monitors first, then all other Ceph
+services, and restart or remount the clients. Then run the migration as described in
+xref:pveceph_cephx_migration_helper[Migration Steps].
 
 [[pveceph_cephx_staged_keys]]
 Staged Keys and Confirmation
