@@ -1550,6 +1550,15 @@ also when Cephx is disabled, that is, when `auth_cluster_required`,
 Disabling Cephx therefore does not clear them, and changing the authentication
 method interrupts existing clients, which need a restart or remount afterwards.
 
+Only run a cluster without Cephx if its public network, not only its cluster
+network, is reachable solely by hosts you trust with full administrative access
+to Ceph. In particular, keep untrusted guests off that network. Without Cephx,
+Ceph grants every connection full access, whatever Ceph user it claims, and
+does not sign or encrypt messages. The Ceph project recommends against disabling
+Cephx footnote:[Ceph: Disabling Cephx
+{cephdocs-url}/rados/configuration/auth-config-ref/#disabling-cephx].
+Disabling it does not repair a failed key migration.
+
 On a cluster with Cephx disabled:
 
 . Run the helper without options and apply its plan. It migrates the manager,
