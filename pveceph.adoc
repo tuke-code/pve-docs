@@ -1459,6 +1459,9 @@ until confirmation makes the new key current and invalidates the old one.
 
 [[pveceph_cephx_refresh_clients]]
 .Refresh Clients
+Refresh the clients after applying the plan, as they can only load a new key
+once it is staged:
+
 * Live-migrate affected virtual machines in the web interface, or stop and
   start them. A guest reboot is not enough.
 * Stop and start affected containers and other RBD clients.
@@ -1474,10 +1477,14 @@ until confirmation makes the new key current and invalidates the old one.
   xref:pveceph_cephx_external_copies[managed key files], then restart or remount
   those clients.
 
-The helper reports sessions that may still hold an old key. Client hints
-are host-wide, not session attribution or a complete workload inventory.
-Sockets without an owning process are listed separately. Check disconnected
-clients and external key copies yourself.
+Then run the helper without options. It lists the sessions that may still hold
+an old key. Where it finds the kernel client of a session, it names the RBD
+mapping, with the container or virtual machine configured to use it, if any, or
+the CephFS client, with the CephFS mounts of the cluster found on that node.
+Other client hints, such as the virtual machines connected from a node, are
+host-wide, not session attribution or a complete workload inventory. Refresh the
+affected clients and run the helper again until it prints a confirmation
+command. Check disconnected clients and external key copies yourself.
 
 [[pveceph_cephx_finish]]
 3. Finish or Pause the Migration
